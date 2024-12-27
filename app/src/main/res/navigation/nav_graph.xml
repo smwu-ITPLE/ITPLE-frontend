@@ -40,4 +40,24 @@
         android:name="com.smwuitple.maeumgil.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/create2Fragment"
+        android:name="com.smwuitple.maeumgil.fragment.Create2Fragment"
+        android:label="fragment_create2"
+        tools:layout="@layout/fragment_create2" />
+    <fragment
+        android:id="@+id/create3Fragment"
+        android:name="com.smwuitple.maeumgil.fragment.Create3Fragment"
+        android:label="fragment_create3"
+        tools:layout="@layout/fragment_create3" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.smwuitple.maeumgil.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.smwuitple.maeumgil.fragment.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
 </navigation>
