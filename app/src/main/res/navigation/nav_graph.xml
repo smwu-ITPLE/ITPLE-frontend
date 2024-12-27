@@ -60,4 +60,9 @@
         android:name="com.smwuitple.maeumgil.fragment.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/create4Fragment2"
+        android:name="com.smwuitple.maeumgil.fragment.Create4Fragment"
+        android:label="fragment_create4"
+        tools:layout="@layout/fragment_create4" />
 </navigation>

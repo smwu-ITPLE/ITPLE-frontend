@@ -239,7 +239,7 @@
             <!-- 영정사진 업로드 버튼 -->
             <Button
                 android:id="@+id/upload_memorial_image_button"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="업로드"
                 android:textSize="13sp"
