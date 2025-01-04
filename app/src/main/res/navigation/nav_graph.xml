@@ -65,4 +65,29 @@
         android:name="com.smwuitple.maeumgil.fragment.Create4Fragment"
         android:label="fragment_create4"
         tools:layout="@layout/fragment_create4" />
+    <fragment
+        android:id="@+id/privateMainFragment"
+        android:name="com.smwuitple.maeumgil.fragment.PrivateMainFragment"
+        android:label="fragment_private_main"
+        tools:layout="@layout/fragment_private_main" />
+    <fragment
+        android:id="@+id/archieve1Fragment"
+        android:name="com.smwuitple.maeumgil.fragment.Archieve1Fragment"
+        android:label="fragment_archieve1"
+        tools:layout="@layout/fragment_archieve1" />
+    <fragment
+        android:id="@+id/archieve2Fragment"
+        android:name="com.smwuitple.maeumgil.fragment.Archieve2Fragment"
+        android:label="fragment_archieve2"
+        tools:layout="@layout/fragment_archieve2" />
+    <fragment
+        android:id="@+id/archieveFailureFragment"
+        android:name="com.smwuitple.maeumgil.fragment.ArchieveFailureFragment"
+        android:label="fragment_archieve_failure"
+        tools:layout="@layout/fragment_archieve_failure" />
+    <fragment
+        android:id="@+id/archieveSuccessFragment"
+        android:name="com.smwuitple.maeumgil.fragment.ArchieveSuccessFragment"
+        android:label="fragment_archieve_success"
+        tools:layout="@layout/fragment_archieve_success" />
 </navigation>
