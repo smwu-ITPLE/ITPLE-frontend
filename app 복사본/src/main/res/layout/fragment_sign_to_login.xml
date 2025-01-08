@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--https://velog.io/@hyom/AndroidKotlin-Custom-Dialog-%EB%A7%8C%EB%93%A4%EA%B8%B0-->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customDialog_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.SignToLoginFragment"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/cardview_gray">
+
+        <TextView
+            android:id="@+id/popup_body"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical"
+            android:text="회원가입이 완료되었습니다.\n로그인해주세요."
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat,TextSizeCheck">
+
+        </TextView>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="center_horizontal"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/popup_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/btn_background"
+                android:backgroundTint="@color/black"
+                android:text="회원가입"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
