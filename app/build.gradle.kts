@@ -72,4 +72,6 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.anychart:AnyChart-Android:1.1.2")
 }
