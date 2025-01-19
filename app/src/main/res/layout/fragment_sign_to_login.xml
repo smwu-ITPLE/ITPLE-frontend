@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--https://velog.io/@hyom/AndroidKotlin-Custom-Dialog-%EB%A7%8C%EB%93%A4%EA%B8%B0-->
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/customDialog_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".fragment.SignToLoginFragment"
-    >
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragment.SignToLoginFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customDialog_layout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@drawable/cardview_gray">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/popup_body"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="0.5"
-            android:gravity="center_vertical"
-            android:text="회원가입이 완료되었습니다.\n로그인해주세요."
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            tools:ignore="RtlCompat,TextSizeCheck">
-
-        </TextView>
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:gravity="center_horizontal"
-            >
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cardview_gray"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/popup_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:text="회원가입이 완료되었습니다.\n로그인해주세요."
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/popup_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_background"
                 android:backgroundTint="@color/black"
-                android:text="회원가입"
+                android:text="로그인"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-
-
         </LinearLayout>
 
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

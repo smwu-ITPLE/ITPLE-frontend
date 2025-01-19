@@ -1,119 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-tools:context=".fragment.SearchFragment">
-
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="330dp"
-    android:layout_height="300dp"
-    android:background="@drawable/cardview_gray">
-
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    app:cardCornerRadius="16dp"
+    tools:context=".fragment.SearchFragment">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:gravity="center_horizontal"
-        >
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/cardview_gray"
+        android:padding="16dp">
 
-
-        <TextView
-            android:id="@+id/btn_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:text=" X "
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
+        <!-- 상단 타이틀과 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginEnd="35dp"
-            android:text="조문 공간 검색"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="X"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="조문 공간 검색"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
+        <!-- 고인의 성함 입력 -->
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_text_input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_textview">
-        <com.google.android.material.textfield.TextInputEditText
+            android:layout_marginTop="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_text_input_edit_text"
-                android:background="@drawable/btn_all_round"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="13dp"
-                android:hint="고인의 성함을 입력하세요"
-                android:textAppearance="@style/TextLabel" />
+                android:hint="고인의 성함"
+                android:padding="12dp"
+                android:background="@drawable/btn_all_round" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 비밀번호 입력 -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_text_input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_textview">
+            android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_text_input_edit_text"
-                android:background="@drawable/btn_all_round"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="비밀번호"
+                android:padding="12dp"
                 android:inputType="textPassword"
-                android:padding="13dp"
-                android:hint="비밀번호를 입력하세요"
-                android:textAppearance="@style/TextLabel" />
+                android:background="@drawable/btn_all_round" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:gravity="center_horizontal"
-        >
-
-        <androidx.appcompat.widget.AppCompatButton
+        <!-- 조문하기 버튼 -->
+        <Button
             android:id="@+id/popup_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/btn_background"
-            android:backgroundTint="@color/black"
             android:text="조문하기"
             android:textColor="@color/white"
-            android:textSize="15sp" />
-
+            android:textSize="16sp" />
     </LinearLayout>
-
-</LinearLayout>
 </androidx.cardview.widget.CardView>

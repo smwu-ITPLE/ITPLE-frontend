@@ -33,6 +33,10 @@ class LoginFragment : Fragment() {
         val loginButton = view.findViewById<Button>(R.id.btn_login)
         loginButton.setOnClickListener {
             Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance())
+                .commit()
         }
 
         return view

@@ -1,7 +1,0 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/white" /> <!-- 버튼 배경색 -->
-    <stroke
-        android:width="0.5dp"
-        android:color="@color/black" /> <!-- 테두리 두께 및 색상 -->
-    <corners android:radius="20dp" /> <!-- 모서리 둥글기 -->
-</shape>

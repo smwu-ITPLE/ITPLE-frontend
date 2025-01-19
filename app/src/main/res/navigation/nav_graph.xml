@@ -44,41 +44,54 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 
-    <!-- SignToLogin Fragment -->
-    <fragment
-        android:id="@+id/signToLoginFragment2"
-        android:name="com.smwuitple.maeumgil.fragment.SignToLoginFragment"
-        android:label="fragment_sign_to_login"
-        tools:layout="@layout/fragment_sign_to_login" />
-
     <!-- Home Fragment -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.smwuitple.maeumgil.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_create1Fragment"
+            app:destination="@id/create1Fragment" />
+    </fragment>
 
     <!-- Create Fragments -->
     <fragment
         android:id="@+id/create1Fragment"
         android:name="com.smwuitple.maeumgil.fragment.Create1Fragment"
         android:label="fragment_create1"
-        tools:layout="@layout/fragment_create1" />
+        tools:layout="@layout/fragment_create1">
+        <action
+            android:id="@+id/action_create1Fragment_to_create2Fragment"
+            app:destination="@id/create2Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/create2Fragment"
         android:name="com.smwuitple.maeumgil.fragment.Create2Fragment"
         android:label="fragment_create2"
-        tools:layout="@layout/fragment_create2" />
+        tools:layout="@layout/fragment_create2">
+        <action
+            android:id="@+id/action_create2Fragment_to_create3Fragment"
+            app:destination="@id/create3Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/create3Fragment"
         android:name="com.smwuitple.maeumgil.fragment.Create3Fragment"
         android:label="fragment_create3"
-        tools:layout="@layout/fragment_create3" />
+        tools:layout="@layout/fragment_create3">
+        <action
+            android:id="@+id/action_create3Fragment_to_create4Fragment"
+            app:destination="@id/create4Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/create4Fragment"
         android:name="com.smwuitple.maeumgil.fragment.Create4Fragment"
         android:label="fragment_create4"
-        tools:layout="@layout/fragment_create4" />
+        tools:layout="@layout/fragment_create4">
+        <action
+            android:id="@+id/action_create4Fragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <!-- Search and Camera Fragments -->
     <fragment
