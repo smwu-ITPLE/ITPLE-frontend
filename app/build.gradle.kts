@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.smwuitple.maeumgil"
-    compileSdk = 34
+:    compileSdk = 34
     buildFeatures {
         viewBinding = true
     }
