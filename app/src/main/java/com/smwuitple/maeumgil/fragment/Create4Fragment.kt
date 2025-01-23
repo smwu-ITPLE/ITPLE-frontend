@@ -1,60 +1,46 @@
 package com.smwuitple.maeumgil.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Create4Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Create4Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create4, container, false)
+        val view = inflater.inflate(R.layout.fragment_create4, container, false)
+
+        // 홈 버튼 클릭 이벤트
+        view.findViewById<Button>(R.id.home_button).setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance())
+                .commit()
+        }
+
+        // 관리 버튼 클릭 이벤트->임의로 homefragemnt 로
+        view.findViewById<Button>(R.id.manage_button).setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance())
+                .commit()
+        }
+
+        // 공유하기 버튼 (옵션: 구현된 기능 추가 가능)
+        view.findViewById<Button>(R.id.share_button).setOnClickListener {
+            // 공유 기능 구현
+        }
+
+        return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Create4Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Create4Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): Create4Fragment {
+            return Create4Fragment()
+        }
     }
 }

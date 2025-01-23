@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="Base.Theme.Maeumgil" parent="Theme.MaterialComponents.Light">
+        <!-- MaterialComponents Light 테마 사용 -->
+        <item name="colorPrimary">@color/purple_500</item> <!-- 원하는 색상으로 변경 -->
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+    </style>
+
+    <!-- DarkActionBar 추가 -->
+    <style name="Theme.Maeumgil" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+    </style>
+
+    <!-- Custom Button Style -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item> <!-- 버튼 배경 흰색 -->
+        <item name="android:textColor">@color/black</item> <!-- 버튼 텍스트 검정 -->
+        <item name="cornerRadius">10dp</item> <!-- 둥근 버튼 -->
+    </style>
+
+    <!-- TextLabel 스타일 -->
+    <style name="TextLabel" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>
