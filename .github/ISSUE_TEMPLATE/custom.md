@@ -1,7 +1,7 @@
 ---
-name: Issue Template
-about: 이슈 작성
-title: ''
+name: Custom issue template
+about: Describe this issue template's purpose here.
+title: "[type] 작업 / 작업 내용 ex. [feat] 로그인 / 소셜로그인 api 구현"
 labels: ''
 assignees: ''
 
