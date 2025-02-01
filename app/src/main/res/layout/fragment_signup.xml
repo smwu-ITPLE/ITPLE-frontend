@@ -14,6 +14,7 @@
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:background="@color/white"
         android:fontFamily="@font/jejomyeongjo"
         android:text="마음길"
@@ -22,7 +23,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.5"
+        tools:ignore="MissingConstraints" />
 
     <!-- 이름 입력 -->
     <TextView
@@ -49,14 +51,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_textview">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_textview_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이름을 입력하세요"
             android:background="@drawable/btn_all_round"
+            android:hint="이름을 입력하세요"
             android:padding="13dp"
-            android:textAppearance="@style/TextLabel" />
+            android:textAppearance="@style/TextLabel"
+            tools:ignore="TouchTargetSizeCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 전화번호 입력 -->
@@ -103,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:text="@string/password"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -177,12 +180,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="@color/black"
+        android:layout_marginTop="40dp"
         android:text="회원가입"
-        android:textColor="@color/white"
         android:textSize="16sp"
+        style="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@id/password_recheck_text_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

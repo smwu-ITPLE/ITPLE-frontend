@@ -2,8 +2,7 @@ package com.smwuitple.maeumgil
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.smwuitple.maeumgil.R
-import com.smwuitple.maeumgil.fragment.MainFragment
+import com.smwuitple.maeumgil.fragment.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
