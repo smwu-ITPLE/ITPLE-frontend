@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.R
+import com.smwuitple.maeumgil.dto.request.LoginRequest
+import com.smwuitple.maeumgil.dto.response.LoginResponse
+import com.smwuitple.maeumgil.utils.RetrofitClient
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginFragment : Fragment() {
-
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Arguments 초기화
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,37 +25,51 @@ class LoginFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        // 로그인 버튼 클릭 이벤트
+        val phoneInput = view.findViewById<EditText>(R.id.id_text_input_edit_text)
+        val passwordInput = view.findViewById<EditText>(R.id.password_text_input_edit_text)
+
         val loginButton = view.findViewById<Button>(R.id.btn_login)
         loginButton.setOnClickListener {
-            Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+            val phonenumber = phoneInput.text.toString().trim()
+            val passwd = passwordInput.text.toString().trim()
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment.newInstance())
-                .commit()
+            if (phonenumber.isEmpty() || passwd.isEmpty()) {
+                Toast.makeText(context, "전화번호와 비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val request = LoginRequest(phonenumber, passwd)
+            // Retrofit을 통한 로그인 요청
+            RetrofitClient.userApi.loginUser(request).enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        Toast.makeText(context, result?.message ?: "로그인 성공", Toast.LENGTH_SHORT).show()
+
+                        // 로그인 성공 후 홈 화면으로 이동
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, HomeFragment.newInstance())
+                            .commit()
+                    } else {
+                        val errorJson = response.errorBody()?.string()
+                        val jsonObject = JSONObject(errorJson)
+                        val errorMessage = jsonObject.getString("message")
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(context, "서버와의 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         return view
     }
 
     companion object {
-        private const val ARG_PARAM1 = "param1"
-        private const val ARG_PARAM2 = "param2"
-
-        /**
-         * LoginFragment의 인스턴스를 생성하는 메서드.
-         * @param param1 첫 번째 매개변수.
-         * @param param2 두 번째 매개변수.
-         * @return LoginFragment 인스턴스.
-         */
-        @JvmStatic
-        fun newInstance(param1: String, param2: String): LoginFragment {
-            return LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): LoginFragment {
+            return LoginFragment()
         }
     }
 }

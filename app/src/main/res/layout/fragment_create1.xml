@@ -230,7 +230,7 @@
                 android:id="@+id/memorial_image_view"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/ic_launcher_foreground"
             android:contentDescription="영정사진"
             android:layout_gravity="center"
             android:scaleType="centerCrop"/>

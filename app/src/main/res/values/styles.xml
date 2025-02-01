@@ -8,4 +8,8 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:layout_margin">3dp</item> <!-- 버튼 간 여백 추가 -->
     </style>
+
+    <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/init</item>
+    </style>
 </resources>

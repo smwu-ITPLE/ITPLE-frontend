@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/transparent"
     tools:context=".fragment.SignToLoginFragment">
 
     <androidx.cardview.widget.CardView
@@ -39,16 +39,14 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/popup_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/btn_background"
-                android:backgroundTint="@color/black"
                 android:text="로그인"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                style="@style/ButtonStyle"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

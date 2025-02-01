@@ -9,26 +9,23 @@
     tools:context=".fragment.HomeFragment">
 
     <!-- 상단 텍스트 -->
-
-    <!-- 메인 이미지 -->
-
-    <!-- 첫 번째 버튼: 프로필 -->
-
-    <!-- 두 번째 버튼: 채팅 -->
-
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:background="@color/white"
+        android:fontFamily="@font/jejomyeongjo"
         android:text="마음길"
         android:textSize="27sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="40dp"
+        tools:ignore="MissingConstraints" />
 
+    <!-- 메인 이미지 -->
     <ImageView
         android:id="@+id/main_image"
         android:layout_width="match_parent"
@@ -40,6 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_intro" />
 
+    <!-- 첫 번째 버튼: 프로필 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profile_button"
         android:layout_width="150dp"
@@ -70,11 +68,13 @@
             android:text="눈송이님"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- 두 번째 버튼: 채팅 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_button"
         android:layout_width="150dp"
@@ -91,10 +91,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="채팅"
+            android:layout_marginStart="20dp"
+            android:text="촬영"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,12 +104,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="부의금과\n위로의 말을 전해요"
+            android:text="영상을 통해\n위로의 말을 전해요"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chat_title" />
+
+        <ImageView
+            android:id="@+id/chat_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 세 번째 버튼: 부고 찾기 -->
@@ -131,6 +142,7 @@
             android:text="조문 공간 검색"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -167,6 +179,7 @@
             android:text="조문 공간 생성"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,31 +1,50 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme -->
     <style name="Base.Theme.Maeumgil" parent="Theme.MaterialComponents.Light">
-        <!-- MaterialComponents Light 테마 사용 -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <!--
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorSecondary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Button 기본 Tint 제거 -->
-        <item name="colorButtonNormal">@android:color/transparent</item>
-    </style>
+        <item name="colorOnSecondary">@color/white</item>
 
-    <!-- DarkActionBar 추가 -->
-    <style name="Theme.Maeumgil" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="buttonStyle">@null</item>
+        <item name="android:buttonStyle">@null</item>
+        -->
+    </style>
+    <style name="Theme.Maeumgil" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--상태바-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!--색상-->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorSecondary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorButtonNormal">@android:color/transparent</item>
     </style>
 
     <!-- Custom Button Style -->
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <!-- Custom Button Style -->
+    <style name="WhiteButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/white</item> <!-- 버튼 배경 흰색 -->
         <item name="android:textColor">@color/black</item> <!-- 버튼 텍스트 검정 -->
-        <item name="cornerRadius">10dp</item> <!-- 둥근 버튼 -->
+        <item name="cornerRadius">20dp</item> <!-- 둥근 버튼 -->
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
     </style>
+
 
     <!-- TextLabel 스타일 -->
     <style name="TextLabel" parent="TextAppearance.MaterialComponents.Caption">
