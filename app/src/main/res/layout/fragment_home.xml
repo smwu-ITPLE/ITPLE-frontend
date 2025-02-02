@@ -13,17 +13,16 @@
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@color/white"
-        android:fontFamily="@font/jejomyeongjo"
+        android:layout_marginTop="40dp"
         android:text="마음길"
+        android:fontFamily="@font/jejomyeongjo"
         android:textSize="27sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="40dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
     <!-- 메인 이미지 -->
     <ImageView
@@ -45,7 +44,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/btn_background"
         android:backgroundTint="@color/lightgray"
-        app:layout_constraintEnd_toStartOf="@id/chat_button"
+        app:layout_constraintEnd_toStartOf="@id/camera_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_image">
@@ -74,9 +73,9 @@
             app:layout_constraintTop_toBottomOf="@id/profile_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 두 번째 버튼: 채팅 -->
+    <!-- 두 번째 버튼: 촬영 -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/chat_button"
+        android:id="@+id/camera_button"
         android:layout_width="150dp"
         android:layout_height="135dp"
         android:layout_marginTop="16dp"
@@ -87,11 +86,11 @@
         app:layout_constraintTop_toBottomOf="@id/main_image">
 
         <TextView
-            android:id="@+id/chat_title"
+            android:id="@+id/camera_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
             android:text="촬영"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -100,19 +99,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/chat_description"
+            android:id="@+id/camera_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
             android:text="영상을 통해\n위로의 말을 전해요"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chat_title" />
+            app:layout_constraintTop_toBottomOf="@id/camera_title" />
 
         <ImageView
-            android:id="@+id/chat_icon"
+            android:id="@+id/camera_icon"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="25dp"
@@ -130,15 +129,15 @@
         android:layout_margin="20dp"
         android:background="@drawable/btn_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chat_button"
+        app:layout_constraintTop_toBottomOf="@id/camera_button"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/search_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
             android:text="조문 공간 검색"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -150,10 +149,10 @@
             android:id="@+id/search_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:text="등록된 부고를 검색하여\n조문 공간에 입장하세요"
-            android:textSize="14sp"
+            android:text="등록된 부고를 검색하여 조문 공간에 입장하세요"
+            android:textSize="15sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/search_title"
             app:layout_constraintStart_toStartOf="parent" />
@@ -174,8 +173,8 @@
             android:id="@+id/create_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
             android:text="조문 공간 생성"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -187,10 +186,10 @@
             android:id="@+id/create_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:text="모바일 부고를 위한\n조문 공간을 생성하세요"
-            android:textSize="14sp"
+            android:text="모바일 부고를 위한 조문 공간을 생성하세요"
+            android:textSize="15sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/create_title"
             app:layout_constraintStart_toStartOf="parent" />
