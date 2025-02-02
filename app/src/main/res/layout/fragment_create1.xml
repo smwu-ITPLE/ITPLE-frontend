@@ -7,28 +7,31 @@
     android:background="@color/white"
     tools:context=".fragment.Create1Fragment">
 
+    <!-- 상단 텍스트 -->
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:text="조문 공간 생성"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:src="@drawable/btn_back"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="35dp"
         />
 
     <TextView
@@ -120,9 +123,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/age_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:inputType="number"
-                android:textAppearance="@style/TextLabel" />
+                android:hint="나이를 입력하세요"
+                android:textAppearance="@style/TextLabel"
+                tools:ignore="TouchTargetSizeCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -193,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="13dp"
-                android:hint="날짜와 시간 선택"
+                android:hint="날짜와 시간을 선택하세요"
                 android:textAppearance="@style/TextLabel"
                 android:focusable="false"
                 android:cursorVisible="false" />
@@ -242,11 +247,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/btn_background"
-                android:backgroundTint="@color/gray"
                 android:text="업로드"
-                android:textColor="@color/black"
-                android:textSize="13sp"
+                style="@style/GrayButtonStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/memorial_image_view"
                 app:layout_constraintTop_toTopOf="@+id/memorial_image_view" />
         </LinearLayout>
@@ -257,12 +259,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="@color/black"
+        android:layout_marginBottom="80dp"
         android:text="다음으로"
-        android:textColor="@color/white"
-        android:textSize="16sp"
+        style="@style/ButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

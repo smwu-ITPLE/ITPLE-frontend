@@ -49,6 +49,26 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
+    <style name="GrayButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="WhiteBorderButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">0.5dp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
     <style name="TitleText">
         <item name="android:fontFamily">@font/jejomyeongjo</item>
         <item name="android:textSize">27sp</item>

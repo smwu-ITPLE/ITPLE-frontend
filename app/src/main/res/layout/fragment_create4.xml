@@ -7,25 +7,20 @@
     android:background="@color/white"
     tools:context=".fragment.Create4Fragment">
 
-    <!-- 상단 제목 -->
-
-    <!-- 영정 사진 프레임 -->
-
-    <!-- 영정 사진 -->
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/jejomyeongjo"
+        android:layout_marginTop="40dp"
         android:text="마음길"
-        android:textSize="27sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        style="@style/TitleText"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
+    <!-- 영정 사진 프레임 -->
     <ImageView
         android:id="@+id/memorial_frame"
         android:layout_width="160dp"
@@ -38,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_intro" />
 
+    <!-- 영정 사진 -->
     <ImageView
         android:id="@+id/memorial_image_view"
         android:layout_width="100dp"
@@ -66,23 +62,20 @@
         app:layout_constraintTop_toBottomOf="@id/memorial_frame" />
 
     <!-- 공유하기 버튼 -->
-
-    <!-- 공유 안내 텍스트 -->
     <Button
         android:id="@+id/share_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:background="@drawable/btn_border"
         android:elevation="0dp"
         android:stateListAnimator="@null"
         android:text="공유하기"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        style="@style/WhiteBorderButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_memorial_message" />
 
+    <!-- 공유 안내 텍스트 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,11 +92,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginBottom="80dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/share_button">
+        app:layout_constraintStart_toStartOf="parent">
 
         <!-- 홈 버튼 -->
         <Button
@@ -112,11 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_background"
-            android:backgroundTint="@color/black"
             android:text="홈"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonStyle"/>
 
         <!-- 관리 버튼 -->
         <Button
@@ -125,10 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_background"
-            android:backgroundTint="@color/black"
             android:text="관리"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonStyle"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
