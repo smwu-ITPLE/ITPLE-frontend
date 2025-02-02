@@ -61,7 +61,7 @@ class SignupFragment : Fragment() {
                         val result = response.body()
                         Toast.makeText(context, result?.message ?: "회원가입 성공", Toast.LENGTH_SHORT).show()
 
-                        SignToLoginFragment().show(parentFragmentManager, "SignToLoginFragment")
+                        SignToLoginFragment.newInstance().show(parentFragmentManager, "SignToLoginFragment")
 
                     } else {
                         val errorJson = response.errorBody()?.string()
