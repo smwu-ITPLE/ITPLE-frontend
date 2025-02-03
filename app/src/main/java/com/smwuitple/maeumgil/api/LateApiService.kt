@@ -13,7 +13,7 @@ interface LateApiService {
     fun createLate(
         @Header("Cookie") sessionId: String,
         @Part("data") request : RequestBody,
-        @Part profile : MultipartBody.Part) : Call<ApiResponse>
+        @Part profile : MultipartBody.Part ? = null) : Call<ApiResponse>
 
     @POST("/api/lates/search")
     fun searchLate(@Body request : SearchLateRequest) : Call<ApiResponse>

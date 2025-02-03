@@ -23,6 +23,7 @@
         android:background="@color/white" />
 
     <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
@@ -92,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="13dp"
-                android:hint="날짜와 시간 선택"
+                android:hint="날짜와 시간을 선택해주세요"
                 android:textAppearance="@style/TextLabel"
                 android:focusable="false"
                 android:cursorVisible="false" />
@@ -140,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="75dp"
-        android:text="부고 문구"
+        android:text="부고 문구 (선택)"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
