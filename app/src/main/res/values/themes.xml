@@ -31,6 +31,8 @@
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/black</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="cornerRadius">20dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
@@ -38,11 +40,41 @@
 
     <!-- Custom Button Style -->
     <style name="WhiteButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/white</item> <!-- 버튼 배경 흰색 -->
-        <item name="android:textColor">@color/black</item> <!-- 버튼 텍스트 검정 -->
-        <item name="cornerRadius">20dp</item> <!-- 둥근 버튼 -->
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">20dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="GrayButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="WhiteBorderButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">0.5dp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="TitleText">
+        <item name="android:fontFamily">@font/jejomyeongjo</item>
+        <item name="android:textSize">27sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">마음길</item>
+        <item name="android:typeface">normal</item>
     </style>
 
 

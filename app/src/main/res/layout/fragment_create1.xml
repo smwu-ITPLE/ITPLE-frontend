@@ -7,28 +7,32 @@
     android:background="@color/white"
     tools:context=".fragment.Create1Fragment">
 
+    <!-- 상단 텍스트 -->
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:text="조문 공간 생성"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
     <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:src="@drawable/btn_back"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="35dp"
         />
 
     <TextView
@@ -122,6 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:hint="나이를 입력하세요"
                 android:textAppearance="@style/TextLabel" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,8 +141,10 @@
             android:textStyle="bold" />
 
         <RadioGroup
+            android:id="@+id/radio_group_gender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:layout_weight="2"
             android:orientation="horizontal">
@@ -193,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="13dp"
-                android:hint="날짜와 시간 선택"
+                android:hint="날짜와 시간을 선택하세요"
                 android:textAppearance="@style/TextLabel"
                 android:focusable="false"
                 android:cursorVisible="false" />
@@ -206,7 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="75dp"
-        android:text="영정사진"
+        android:text="영정사진 (선택)"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -231,9 +238,9 @@
                 android:layout_width="100dp"
                 android:layout_height="150dp"
                 android:src="@drawable/ic_launcher_foreground"
-            android:contentDescription="영정사진"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"/>
+                android:contentDescription="영정사진"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"/>
 
 
             <!-- 영정사진 업로드 버튼 -->
@@ -242,11 +249,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/btn_background"
-                android:backgroundTint="@color/gray"
                 android:text="업로드"
-                android:textColor="@color/black"
-                android:textSize="13sp"
+                style="@style/GrayButtonStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/memorial_image_view"
                 app:layout_constraintTop_toTopOf="@+id/memorial_image_view" />
         </LinearLayout>
@@ -257,12 +261,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="@color/black"
+        android:layout_marginBottom="80dp"
         android:text="다음으로"
-        android:textColor="@color/white"
-        android:textSize="16sp"
+        style="@style/ButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

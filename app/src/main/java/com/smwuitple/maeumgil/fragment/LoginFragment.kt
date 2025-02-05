@@ -12,6 +12,7 @@ import com.smwuitple.maeumgil.R
 import com.smwuitple.maeumgil.dto.request.LoginRequest
 import com.smwuitple.maeumgil.dto.response.LoginResponse
 import com.smwuitple.maeumgil.utils.RetrofitClient
+import com.smwuitple.maeumgil.utils.SessionManager
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,9 +40,20 @@ class LoginFragment : Fragment() {
             }
 
             val request = LoginRequest(phonenumber, passwd)
+
             // Retrofit을 통한 로그인 요청
             RetrofitClient.userApi.loginUser(request).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    val headers = response.headers()
+                    val cookies = headers.values("Set-Cookie")
+
+                    for (cookie in cookies) {
+                        if (cookie.startsWith("JSESSIONID")) {
+                            val sessionId = cookie.split(";")[0] // JSESSIONID=xxxx
+                            SessionManager.saveSessionId(requireContext(), sessionId)
+                        }
+                    }
+
                     if (response.isSuccessful) {
                         val result = response.body()
                         Toast.makeText(context, result?.message ?: "로그인 성공", Toast.LENGTH_SHORT).show()
