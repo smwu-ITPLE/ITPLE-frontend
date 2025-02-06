@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://10.101.38.27:8081" // 서버 주소 맞게 변경 필요!
+    private const val BASE_URL = "http://192.168.219.108:8081"
     // res/xml/network_security_config.xml도 변경
 
     // 쿠키 저장 변수

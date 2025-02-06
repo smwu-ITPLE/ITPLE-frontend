@@ -34,7 +34,7 @@
         tools:layout="@layout/fragment_signup">
         <action
             android:id="@+id/action_signupFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/signToLoginFragment" />
     </fragment>
 
     <!-- Login Fragment -->
@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_homeFragment_to_create1Fragment"
             app:destination="@id/create1Fragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 
     <!-- Create Fragments -->
@@ -98,7 +101,11 @@
         android:id="@+id/searchFragment"
         android:name="com.smwuitple.maeumgil.fragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_privateMainFragment"
+            app:destination="@id/privateMainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.smwuitple.maeumgil.fragment.CameraFragment"
@@ -131,4 +138,13 @@
         android:name="com.smwuitple.maeumgil.fragment.ArchieveSuccessFragment"
         android:label="fragment_archieve_success"
         tools:layout="@layout/fragment_archieve_success" />
+    <fragment
+        android:id="@+id/signToLoginFragment"
+        android:name="com.smwuitple.maeumgil.fragment.SignToLoginFragment"
+        android:label="fragment_sign_to_login"
+        tools:layout="@layout/fragment_sign_to_login" >
+        <action
+            android:id="@+id/action_signToLoginFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>
