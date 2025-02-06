@@ -26,10 +26,7 @@ class HomeFragment : Fragment() {
         // 조문 공간 검색 버튼 클릭 이벤트
         val searchButton = view.findViewById<View>(R.id.search_button)
         searchButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SearchFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            SearchFragment.newInstance().show(parentFragmentManager, "SearchFragment")
         }
 
         return view
