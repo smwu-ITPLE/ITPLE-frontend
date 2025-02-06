@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@color/white"
-    app:cardCornerRadius="16dp"
+    android:background="@android:color/transparent"
     tools:context=".fragment.SearchFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customDialog_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,7 +38,6 @@
                 android:id="@+id/btn_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:text="X"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -50,14 +58,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="고인의 성함"
-                android:padding="12dp"
+                android:padding="10dp"
                 android:background="@drawable/btn_all_round" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,8 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="비밀번호"
-                android:padding="12dp"
-                android:inputType="textPassword"
+                android:padding="10dp"
+                android:inputType="number"
                 android:background="@drawable/btn_all_round" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,10 +92,9 @@
             android:id="@+id/popup_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/btn_background"
+            android:layout_marginTop="20dp"
             android:text="조문하기"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonStyle"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
