@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,31 +9,32 @@
     tools:context=".fragment.PrivateMainFragment">
 
     <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:src="@drawable/btn_back"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="35dp"
         />
 
+
+    <!-- 상단 텍스트 -->
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fontFamily="@font/jejomyeongjo"
+        android:layout_marginTop="40dp"
         android:text="마음길"
-        android:textSize="27sp"
-        android:textStyle="bold"
-        android:contentDescription="마음길 버튼"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/TitleText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
     <ImageView
         android:id="@+id/memorial_frame"
@@ -62,11 +64,11 @@
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
         android:text="故 [이름]"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/memorial_frame"
@@ -78,6 +80,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/txt_name"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,15 +94,13 @@
                 android:layout_marginLeft="10dp"
                 android:text="향년 [나이]세 [성별]"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="start"
-                app:layout_constraintTop_toBottomOf="@id/txt_name"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -110,18 +111,17 @@
                     android:text="별세"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/txt_date_input1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:gravity="start"
                     android:text="2024년 10월 9일 수요일 15시 03분"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <View
@@ -150,77 +150,48 @@
                     android:layout_margin="10dp"
                     android:text="상주 정보"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/owners_list_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical" />
 
-                    <TextView
-                        android:id="@+id/txt_relation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="배우자"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/txt_relation_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="30dp"
-                        android:text="이기준"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="end" />
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txt_relation1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="장남"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                    <!--상주 리스트 -->
 
-                    <TextView
-                        android:id="@+id/txt_relation_name1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="30dp"
-                        android:text="이장남"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="end" />
                 </LinearLayout>
-                <Button
-                    android:id="@+id/btn_chat"
+            </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/btn_background"
-                    android:backgroundTint="@color/black"
-                    android:text="채팅하기"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="MissingConstraints" />
-            </LinearLayout>
+                    android:gravity="center">
+                <Button
+                    android:id="@+id/btn_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="조문 메시지"
+                    style="@style/GrayButtonStyle"/>
+                <Button
+                    android:id="@+id/btn_chat2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="부의금 송금"
+                    style="@style/GrayButtonStyle"/>
+                </LinearLayout>
+
             <View
                 android:id="@+id/line2"
                 android:layout_width="match_parent"
@@ -246,7 +217,7 @@
                     android:layout_margin="10dp"
                     android:text="장례식장 정보"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -262,7 +233,7 @@
                         android:text="장소"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/txt_location_input"
@@ -273,7 +244,7 @@
                         android:gravity="start"
                         android:text="마음길 장례식장 3층\n서울 용산구 청파로 54길 8 3층"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -291,7 +262,7 @@
                         android:text="발인"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/txt_date2_input"
@@ -302,7 +273,7 @@
                         android:gravity="start"
                         android:text="2024년 10월 11일 금요일 08시 00분"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
                 <View
                     android:id="@+id/line3"
@@ -334,7 +305,7 @@
                             android:layout_margin="10dp"
                             android:text="아카이브"
                             android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             />
 
@@ -344,18 +315,21 @@
                             android:layout_weight="1" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
+                            android:id="@+id/write_button"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginRight="20dp"
                             android:background="@drawable/btn_write" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/archives_list_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
+                        android:orientation="vertical" />
+
+                    <TextView
                             android:id="@+id/msg_box1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -367,8 +341,8 @@
                             android:text="숙명여대 재학생 000\n삼가 고인의 명복을 빕니다."
                             android:textColor="@color/black"
                             android:padding="10dp"
-                            android:textSize="16sp" />
-                        <TextView
+                            android:textSize="15sp" />
+                    <TextView
                             android:id="@+id/msg_box2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -380,10 +354,9 @@
                             android:text="익명\n여기에 메시지가 표시됩니다."
                             android:textColor="@color/black"
                             android:padding="10dp"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                            android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
         </LinearLayout>
     </android.widget.ScrollView>
 
