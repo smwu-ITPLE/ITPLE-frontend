@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context=".fragment.Archieve1Fragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customDialog_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,7 +33,6 @@
             android:layout_weight="0.2"
             android:gravity="center_horizontal"
             >
-
 
             <TextView
                 android:id="@+id/btn_close"
@@ -38,9 +50,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_marginEnd="35dp"
-                android:text="Archieve 작성"
+                android:text="아카이브 작성"
                 android:textStyle="bold"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"/>
 
         </LinearLayout>
@@ -56,14 +68,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phone_textview">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_text_input_edit_text"
-                android:background="@drawable/btn_all_round"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="13dp"
+                android:background="@drawable/btn_all_round"
                 android:hint="작성자"
-                android:textAppearance="@style/TextLabel" />
+                android:padding="13dp"
+                android:textAppearance="@style/TextLabel"
+                tools:ignore="TouchTargetSizeCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,8 +89,7 @@
             android:layout_marginTop="3dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/context_textview">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/context_textview_input_edit_text"
@@ -85,7 +98,7 @@
                 android:layout_height="100dp"
                 android:padding="13dp"
                 android:gravity="top|start"
-                android:hint="고인을 위한 위로의 말씀을 작성해주세요"
+                android:hint="위로의 말씀을 작성해주세요"
                 android:inputType="textMultiLine"
                 android:minLines="5"
                 android:maxLines="10"
@@ -104,20 +117,18 @@
             android:gravity="center_horizontal"
             >
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/popup_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/btn_background"
-                android:backgroundTint="@color/black"
                 android:text="전송"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
+                style="@style/ButtonStyle" />
 
         </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
