@@ -9,18 +9,16 @@
     tools:context=".fragment.HomeFragment">
 
     <!-- 상단 텍스트 -->
-    <TextView
+    <ImageView
         android:id="@+id/txt_intro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
         android:layout_marginTop="40dp"
-        android:text="마음길"
-        style="@style/TitleText"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:background="@drawable/txt_intro"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white" />
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <!-- 메인 이미지 -->
     <ImageView
@@ -63,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="눈송이님"
-            android:fontFamily="@font/poppins_r"
             android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -91,7 +88,6 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="15dp"
             android:text="촬영"
-            android:fontFamily="@font/poppins_r"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -102,10 +98,9 @@
             android:id="@+id/camera_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             android:text="영상을 통해\n위로의 말을 전해요"
-            android:fontFamily="@font/poppins_r"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +135,6 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="60dp"
             android:text="조문 공간 검색"
-            android:fontFamily="@font/poppins_r"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -152,9 +146,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:text="등록된 부고를 검색하여 조문 공간에 입장하세요"
-            android:fontFamily="@font/poppins_r"
+            android:layout_marginTop="10dp"
+            android:text="부고를 검색하여 조문 공간에 입장하세요"
             android:textSize="15sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/search_title"
@@ -179,7 +172,6 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="60dp"
             android:text="조문 공간 생성"
-            android:fontFamily="@font/poppins_r"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -191,9 +183,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="모바일 부고를 위한 조문 공간을 생성하세요"
-            android:fontFamily="@font/poppins_r"
             android:textSize="15sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/create_title"

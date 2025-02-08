@@ -10,18 +10,16 @@
     tools:context=".fragment.SignupFragment">
 
     <!-- 소개 텍스트 -->
-    <TextView
+    <ImageView
         android:id="@+id/txt_intro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
         android:layout_marginTop="40dp"
-        android:background="@color/white"
-        style="@style/TitleText"
+        android:background="@drawable/txt_intro"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <!-- 이름 입력 -->
     <TextView
@@ -29,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="100dp"
         android:text="@string/name"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -103,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/password"
         android:textColor="@color/black"
         android:textSize="15sp"

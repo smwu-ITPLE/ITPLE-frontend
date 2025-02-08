@@ -25,6 +25,8 @@
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorButtonNormal">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/nanumgothic</item>
+        <item name="android:lineSpacingExtra">10dp</item>
     </style>
 
     <!-- Custom Button Style -->
