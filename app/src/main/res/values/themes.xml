@@ -25,13 +25,15 @@
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorButtonNormal">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/nanumgothic</item>
+        <item name="android:lineSpacingExtra">10dp</item>
     </style>
 
     <!-- Custom Button Style -->
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/black</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="cornerRadius">20dp</item>
         <item name="android:paddingTop">10dp</item>
@@ -42,7 +44,7 @@
     <style name="WhiteButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="cornerRadius">20dp</item>
         <item name="android:paddingTop">10dp</item>

@@ -1,60 +1,49 @@
 package com.smwuitple.maeumgil.fragment
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.smwuitple.maeumgil.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Archieve2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Archieve2Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+class Archieve2Fragment(private val lateId: String,
+                        private val nickname: String,
+                        private val content: String) : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_archieve2, container, false)
+        val view = inflater.inflate(R.layout.fragment_archieve2, container, false)
+
+        // TODO: 윤녕님 여기 코드 적어주세요 ~~ !! 일단은 2~3초 대기로 해놨습니다
+        //  content에서 텍스트 분석해서,
+        //  성공이면 ArchieveSuccessFragment로 이동 / 실패면 ArchieveFailureFragment로 이동해주세요
+
+        // 2~3초 후 API 호출 후 성공 화면으로 이동
+        Handler(Looper.getMainLooper()).postDelayed({
+            val successFragment = ArchieveSuccessFragment.newInstance(lateId, nickname, content)
+            successFragment.show(parentFragmentManager, "ArchieveSuccessFragment")
+            dismiss()
+        }, 3000) // 3초 대기
+
+        return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Archieve2Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Archieve2Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(lateId: String, nickname: String, content: String): Archieve2Fragment {
+            return Archieve2Fragment(lateId, nickname, content)
+        }
     }
 }
