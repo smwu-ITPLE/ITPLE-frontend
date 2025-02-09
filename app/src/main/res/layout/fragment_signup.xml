@@ -109,25 +109,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/id_text_input_layout" />
 
+    <TextView
+        android:id="@+id/txt_password_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:text="*영문/숫자 포함하여 8자 이상 입력하세요"
+        android:textSize="12sp"
+        android:textColor="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/password_textview"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="1dp"
         app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_textview">
+        app:layout_constraintTop_toBottomOf="@id/txt_password_info">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_text_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="영문/숫자 포함하여 8자 이상 입력하세요"
+            android:hint="비밀번호를 입력하세요"
             android:background="@drawable/btn_all_round"
-            android:padding="13dp"
+            android:padding="12dp"
             android:inputType="textPassword"
             android:textAppearance="@style/TextLabel" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -164,7 +175,7 @@
             android:layout_height="wrap_content"
             android:hint="비밀번호를 재입력하세요"
             android:background="@drawable/btn_all_round"
-            android:padding="13dp"
+            android:padding="12dp"
             android:inputType="textPassword"
             android:textAppearance="@style/TextLabel" />
     </com.google.android.material.textfield.TextInputLayout>
