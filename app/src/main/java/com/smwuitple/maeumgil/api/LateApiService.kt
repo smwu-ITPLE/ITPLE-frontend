@@ -1,5 +1,6 @@
 package com.smwuitple.maeumgil.api
 
+import com.smwuitple.maeumgil.dto.request.ArchiveRequest
 import com.smwuitple.maeumgil.dto.request.SearchLateRequest
 import com.smwuitple.maeumgil.dto.response.ApiResponse
 import com.smwuitple.maeumgil.dto.response.EnterLateResponse
@@ -25,4 +26,9 @@ interface LateApiService {
 
     @DELETE("/api/lates/delete/{lateId}")
     fun deleteLate(@Path("lateId") lateId : String): Call<ApiResponse>
+
+    @POST("/api/lates/{lateId}/archive")
+    fun postArchive(
+        @Path("lateId") lateId: String,
+        @Body request: ArchiveRequest): Call<ApiResponse>
 }

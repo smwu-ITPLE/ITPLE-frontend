@@ -22,12 +22,12 @@ import kotlin.random.Random
 
 class PrivateMainFragment : Fragment() {
 
-    private var lateId: String? = null  // lateId 저장할 변수
+    private var lateId: String? = ""  // lateId 저장할 변수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lateId = it.getString(ARG_LATE_ID)
+            lateId = arguments?.getString(ARG_LATE_ID)?: ""
         }
     }
 
@@ -80,10 +80,52 @@ class PrivateMainFragment : Fragment() {
 
         // 아카이브 작성 버튼 클릭
         writeButton.setOnClickListener {
-
+            val safeLateId = lateId ?: ""
+            val dialog = Archieve1Fragment.newInstance(safeLateId)
+            dialog.show(parentFragmentManager, "Archieve1Fragment")
         }
+
+        // 아카이브 작성 후 자동 갱신을 위한 리스너 등록
+        parentFragmentManager.setFragmentResultListener("archive_update", viewLifecycleOwner) { _, _ ->
+            val safeLateId = lateId ?: return@setFragmentResultListener
+
+            view?.let { v ->
+                loadPrivateMainData(
+                    safeLateId,
+                    v.findViewById(R.id.memorial_image_view),
+                    v.findViewById(R.id.txt_name),
+                    v.findViewById(R.id.txt_age),
+                    v.findViewById(R.id.txt_date_input1),
+                    v.findViewById(R.id.txt_location_input),
+                    v.findViewById(R.id.txt_date2_input),
+                    v.findViewById(R.id.owners_list_container),
+                    v.findViewById(R.id.archives_list_container)
+                )
+            }
+        }
+
         return view
     }
+
+    override fun onResume(){
+        super.onResume()
+        val safeLateId = lateId ?: return
+
+        view?.let {
+            loadPrivateMainData(
+                safeLateId,
+                it.findViewById(R.id.memorial_image_view),
+                it.findViewById(R.id.txt_name),
+                it.findViewById(R.id.txt_age),
+                it.findViewById(R.id.txt_date_input1),
+                it.findViewById(R.id.txt_location_input),
+                it.findViewById(R.id.txt_date2_input),
+                it.findViewById(R.id.owners_list_container),
+                it.findViewById(R.id.archives_list_container)
+            )
+        }
+    }
+
 
     private fun loadPrivateMainData(
         lateId: String, profileImageView: ImageView, nameTextView: TextView, ageTextView: TextView,
@@ -149,20 +191,20 @@ class PrivateMainFragment : Fragment() {
 
                         // 아카이브 메시지 리스트 추가 (랜덤 배경 적용)
                         archivesListContainer.removeAllViews()
-                        val backgroundColors = listOf("#FFF764", "#FFC7CA", "#A1C4FD", "#FF9A8B", "#D4FC79")
+                        val backgroundColors = listOf("#FFE9EA", "#FCF9C1", "#E5F4F5", "#EFEFEF")
 
                         for (archive in it.archives) {
                             val randomColor = backgroundColors[Random.nextInt(backgroundColors.size)]
                             val archiveTextView = TextView(requireContext()).apply {
                                 text = "${archive.nickname}\n${archive.content}"
                                 textSize = 15f
-                                setPadding(10, 10, 10, 10)
+                                setPadding(40, 25, 400, 25)
                                 setTextColor(Color.BLACK)
                                 layoutParams = LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                                 ).apply {
-                                    setMargins(10, 5, 10, 10)
+                                    setMargins(30, 10, 30, 20)
                                 }
                                 setBackgroundColor(Color.parseColor(randomColor))
                             }
@@ -183,12 +225,13 @@ class PrivateMainFragment : Fragment() {
     companion object {
         private const val ARG_LATE_ID = "late_id"
 
-        fun newInstance(lateId: String): PrivateMainFragment {
+        fun newInstance(lateId: String?): PrivateMainFragment {
             return PrivateMainFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_LATE_ID, lateId)
+                    putString(ARG_LATE_ID, lateId ?: "")
                 }
             }
         }
+
     }
 }

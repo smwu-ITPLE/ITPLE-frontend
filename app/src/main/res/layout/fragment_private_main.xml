@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
-        android:text="故 [이름]"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="향년 [나이]세 [성별]"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="2024년 10월 9일 수요일 15시 03분"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -240,7 +240,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:text="마음길 장례식장 3층\n서울 용산구 청파로 54길 8 3층"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -269,7 +269,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:text="2024년 10월 11일 금요일 08시 00분"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -326,33 +326,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical" />
-
-                    <TextView
-                            android:id="@+id/msg_box1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="#FFF764"
-                            android:alpha="0.5"
-                            android:text="숙명여대 재학생 000\n삼가 고인의 명복을 빕니다."
-                            android:textColor="@color/black"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
-                    <TextView
-                            android:id="@+id/msg_box2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="#FFC7CA"
-                            android:alpha="0.5"
-                            android:text="익명\n여기에 메시지가 표시됩니다."
-                            android:textColor="@color/black"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
+                    <!--아카이브 리스트 -->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
