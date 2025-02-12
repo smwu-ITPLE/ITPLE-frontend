@@ -58,6 +58,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     val nav_version = "2.8.4"
     implementation("androidx.navigation:navigation-compose:$nav_version")

@@ -7,28 +7,32 @@
     android:background="@color/white"
     tools:context=".fragment.ManageShareFragment">
 
+
     <TextView
         android:id="@+id/txt_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:text="공유"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
 
     <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:src="@drawable/btn_back"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="35dp"
         />
 
     <androidx.cardview.widget.CardView
@@ -92,10 +96,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:background="@drawable/btn_border"
         android:text="복사"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        style="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@+id/share_message_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -107,11 +109,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="@color/black"
         android:text="공유"
-        android:textColor="@color/white"
-        android:textSize="16sp"
+        style="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@+id/share_message_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -126,6 +125,7 @@
         android:layout_marginTop="15dp"
         android:text="조문 공간을 함께하고 싶은 이에게 공유하세요. \n공유버튼을 통해 SMS로 조문 공간에 초대됩니다."
         android:textSize="14sp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/btn_share"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
