@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragment.MessageFragment">
+
+    <!-- 상단 텍스트 -->
+    <TextView
+        android:id="@+id/txt_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="조문 메시지"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="40dp"
+        android:text=" X "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <!-- 받는 사람 이름 -->
+    <TextView
+        android:id="@+id/txt_receiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이기준님에게"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/txt_intro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"/>
+
+    <TextView
+        android:id="@+id/txt_message_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="텍스트"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_receiver" />
+
+    <!-- 메시지 입력 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/message_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_message_label">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/message_input"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:padding="13dp"
+            android:gravity="top|start"
+            android:hint="위로의 말을 남겨주세요"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:maxLines="10"
+            android:scrollbars="vertical"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 영상 업로드 텍스트 -->
+    <TextView
+        android:id="@+id/txt_video_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="영상"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message_input_layout" />
+
+    <ImageView
+        android:id="@+id/video_upload_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_plus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message_input_layout"/>
+
+    <TextView
+        android:id="@+id/txt_video_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp"
+        android:text="업로드된 영상: 없음"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:background="@color/lightgray"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_video_label"/>
+
+
+
+
+
+
+
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="80dp"
+        android:text="전송"
+        style="@style/ButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

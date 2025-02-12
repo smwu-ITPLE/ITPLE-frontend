@@ -8,31 +8,28 @@
     tools:context=".fragment.ManageMainFragment">
 
     <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:src="@drawable/btn_back"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="30dp"
         />
 
-    <TextView
+    <ImageView
         android:id="@+id/txt_intro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fontFamily="@font/jejomyeongjo"
-        android:text="마음길"
-        android:textSize="27sp"
-        android:textStyle="bold"
-        android:contentDescription="마음길 버튼"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/txt_intro"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/memorial_frame"
