@@ -11,3 +11,13 @@ data class UserData(
     val name: String,
     val id: Int
 )
+
+data class ProfileResponse(
+    val data: UserData2?,
+    val message: String,
+    val status: String
+)
+
+data class UserData2(
+    val name: String
+)

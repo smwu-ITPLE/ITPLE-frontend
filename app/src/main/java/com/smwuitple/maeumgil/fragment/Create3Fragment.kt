@@ -125,9 +125,9 @@ class Create3Fragment : Fragment() {
             MultipartBody.Part.createFormData("profile", file.name, requestFile)
         }
 
-        val sessionId = "${SessionManager.getSessionId(requireContext())}"
+        val apiService = RetrofitClient.getLateApi(requireContext())
 
-        RetrofitClient.lateApi.createLate(sessionId, requestBody, profilePart).enqueue(object :
+        apiService.createLate(requestBody, profilePart).enqueue(object :
             Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful) {

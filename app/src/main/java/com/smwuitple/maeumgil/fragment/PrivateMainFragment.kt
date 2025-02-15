@@ -132,7 +132,7 @@ class PrivateMainFragment : Fragment() {
         passDateTextView: TextView, locationTextView: TextView, deathDateTextView: TextView,
         ownersListContainer: LinearLayout, archivesListContainer: LinearLayout
     ) {
-        val apiService = RetrofitClient.lateApi
+        val apiService = RetrofitClient.getLateApi(requireContext())
 
         apiService.enterLate(lateId).enqueue(object : Callback<EnterLateResponse> {
             override fun onResponse(call: Call<EnterLateResponse>, response: Response<EnterLateResponse>) {

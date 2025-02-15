@@ -54,7 +54,7 @@ class SearchFragment : DialogFragment() {
     }
 
     private fun searchPrivateLate(request: SearchLateRequest) {
-        val apiService = RetrofitClient.lateApi
+        val apiService = RetrofitClient.getLateApi(requireContext())
 
         apiService.searchLate(request).enqueue(object : Callback<SearchLateResponse> {
             override fun onResponse(call: Call<SearchLateResponse>, response: Response<SearchLateResponse>) {
