@@ -74,16 +74,27 @@
                     android:layout_weight="1" />
 
                 <ImageButton
-                    android:id="@+id/btn_more"
+                    android:id="@+id/btn_share"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/btn_front"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="이동 버튼"/>
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_share"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:contentDescription="조문 공간 공유"/>
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_trash"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:contentDescription="조문 공간 삭제"/>
+
+
             </LinearLayout>
 
-            <!-- 버튼 3개 (메시지 관리, 부의금 관리, 더보기) -->
+            <!-- 버튼 2개 (메시지 관리, 부의금 관리) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,15 +121,6 @@
                     android:layout_marginEnd="8dp"
                     android:text="부의금 관리"
                     android:textSize="14sp"
-                    android:backgroundTint="@color/gray"
-                    android:textColor="@color/black"/>
-
-                <Button
-                    android:id="@+id/btn_more_options"
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:text="-"
-                    android:textSize="16sp"
                     android:backgroundTint="@color/gray"
                     android:textColor="@color/black"/>
             </LinearLayout>
