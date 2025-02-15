@@ -34,98 +34,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
         />
-    <!-- 조문 공간 카드 -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardview1"
-        android:layout_width="0dp"
+
+    <!-- 조문 공간 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/txt_intro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical">
-
-            <!-- 조문 공간 제목 및 이동 버튼 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/txt_memorial_name1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="故 박수현님의 조문 공간"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/btn_share"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/ic_share"
-                    tools:ignore="TouchTargetSizeCheck"
-                    android:contentDescription="조문 공간 공유"/>
-
-                <ImageButton
-                    android:id="@+id/btn_delete"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/ic_trash"
-                    tools:ignore="TouchTargetSizeCheck"
-                    android:contentDescription="조문 공간 삭제"/>
-
-
-            </LinearLayout>
-
-            <!-- 버튼 2개 (메시지 관리, 부의금 관리) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="10dp">
-
-                <Button
-                    android:id="@+id/btn_manage_messages"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="메시지 관리"
-                    android:textSize="14sp"
-                    android:backgroundTint="@color/gray"
-                    android:textColor="@color/black"/>
-
-                <Button
-                    android:id="@+id/btn_manage_donations"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="부의금 관리"
-                    android:textSize="14sp"
-                    android:backgroundTint="@color/gray"
-                    android:textColor="@color/black"/>
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

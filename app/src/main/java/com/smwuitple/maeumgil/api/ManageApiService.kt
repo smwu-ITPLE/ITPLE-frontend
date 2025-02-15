@@ -12,5 +12,5 @@ interface ManageApiService {
                   @Path("lateId") lateId : String) : Call<ShareResponse>
 
     @GET("/api/manage/latelist")
-    fun getLateList(@Header("Cookie") sessionId: String): Call<ApiResponse>
+    fun getLateList(): Call<ApiResponse>
 }

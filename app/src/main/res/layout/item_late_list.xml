@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- 조문 공간 제목 및 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/txt_memorial_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="故 홍길동님의 조문 공간"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/btn_share"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="5dp"
+                android:contentDescription="조문 공간 공유"
+                android:src="@drawable/ic_share"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="조문 공간 삭제"
+                android:src="@drawable/ic_trash"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <!-- 버튼 2개 (메시지 관리, 부의금 관리) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btn_manage_messages"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="메시지 관리"
+                android:textSize="14sp"
+                android:backgroundTint="@color/gray"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/btn_manage_donations"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="부의금 관리"
+                android:textSize="14sp"
+                android:backgroundTint="@color/gray"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
