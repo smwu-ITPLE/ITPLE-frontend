@@ -1,60 +1,75 @@
 package com.smwuitple.maeumgil.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.smwuitple.maeumgil.MainActivity
 import com.smwuitple.maeumgil.R
+import com.smwuitple.maeumgil.dto.response.ApiResponse
+import com.smwuitple.maeumgil.utils.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ManageMainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ManageMainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manage_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_manage_main, container, false)
+
+        // 조문 공간 프로필 버튼 클릭 이벤트
+        val settingButton = view.findViewById<View>(R.id.setting)
+        settingButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageListFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // 로그아웃 버튼
+        val logoutButton = view.findViewById<View>(R.id.logout)
+        logoutButton.setOnClickListener {
+            val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", 0)
+            val sessionId = sharedPreferences.getString("JSESSIONID", null)
+
+            if (sessionId.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "로그인 세션이 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val apiService = RetrofitClient.userApi
+
+            apiService.logoutUser("JSESSIONID=$sessionId").enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        // 로그아웃 성공 -> SharedPreferences 삭제 & 홈화면으로 이동
+                        sharedPreferences.edit().clear().apply()
+
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(requireContext(), "로그아웃 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "서버와의 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManageMainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ManageMainFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): ManageMainFragment {
+            return ManageMainFragment()
+        }
     }
 }

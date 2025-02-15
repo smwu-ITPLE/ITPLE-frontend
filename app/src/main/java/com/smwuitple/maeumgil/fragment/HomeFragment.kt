@@ -14,6 +14,15 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // 조문 공간 프로필 버튼 클릭 이벤트
+        val profileButton = view.findViewById<View>(R.id.profile_button)
+        profileButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageMainFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // 조문 공간 생성 버튼 클릭 이벤트
         val createButton = view.findViewById<View>(R.id.create_button)
         createButton.setOnClickListener {
