@@ -136,10 +136,12 @@ class Create3Fragment : Fragment() {
 
                     try {
                         val data = result?.data as? Map<String, Any>
+                        val id = (data?.get("id") as? Number)?.toInt()?.toString() ?: ""
                         val name = data?.get("name")?.toString() ?: ""
                         val profile = data?.get("profile")?.toString() ?: ""
 
                         val bundle = Bundle().apply {
+                            putString("lateId", id)
                             putString("name", name)
                             putString("profile", profile)
                         }
@@ -149,7 +151,6 @@ class Create3Fragment : Fragment() {
 
                         requireActivity().supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
-                            .addToBackStack(null)
                             .commit()
                     } catch (e: Exception) {
                         Toast.makeText(requireContext(), "응답 데이터 처리 오류", Toast.LENGTH_SHORT).show()
