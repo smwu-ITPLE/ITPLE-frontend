@@ -8,8 +8,7 @@ import retrofit2.http.Path
 
 interface ManageApiService {
     @GET("/api/manage/{lateId}/share")
-    fun shareLate(@Header("Cookie") sessionId: String,
-                  @Path("lateId") lateId : String) : Call<ShareResponse>
+    fun shareLate(@Path("lateId") lateId : String) : Call<ShareResponse>
 
     @GET("/api/manage/latelist")
     fun getLateList(): Call<ApiResponse>

@@ -1,5 +1,6 @@
 package com.smwuitple.maeumgil.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smwuitple.maeumgil.R
 import com.smwuitple.maeumgil.dto.response.ApiResponse
 import com.smwuitple.maeumgil.dto.response.LateListItem
+import com.smwuitple.maeumgil.dto.response.ShareResponse
 import com.smwuitple.maeumgil.utils.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,11 +40,7 @@ class ManageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "${item.name} 부의금 관리", Toast.LENGTH_SHORT).show()
             },
             onShareClick = { item ->
-                val fragment = ManageShareFragment.newInstance(item.id)
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit()
+                showshare(item.id, item.name)
             },
             onDeleteClick = { item ->
                 showDeleteDialog(item.id, item.name)
@@ -83,6 +81,43 @@ class ManageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "서버와의 연결 오류", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun showshare(lateId: Int, lateName:String){
+        val apiService = RetrofitClient.getManageApi(requireContext())
+        apiService.shareLate(lateId.toString()).enqueue(object : Callback<ShareResponse>{
+                override fun onResponse(call: Call<ShareResponse>, response: Response<ShareResponse>) {
+                    if (response.isSuccessful) {
+                        response.body()?.data?.let { data ->
+                            val deepLink = "maeumgil://lates/$lateId"
+                            val shareText = """
+                            ${data.name}님께서 별세하셨기에 알립니다.
+                            ${data.content}
+                            
+                            고인의 성함 : ${data.name}
+                            암호 : ${data.passwd}
+                            
+                            초대 링크 : $deepLink
+                            
+                            보내는 이 : ${data.userName} (${data.userPhonenumber})
+                        """.trimIndent()
+
+                            // 공유 인텐트 실행
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, shareText)
+                            }
+                            requireContext().startActivity(Intent.createChooser(shareIntent, "조문 공간 공유하기"))
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "공유 정보 불러오기 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ShareResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "서버와의 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun showDeleteDialog(lateId: Int, lateName: String) {
