@@ -14,7 +14,6 @@ interface LateApiService {
     @Multipart
     @POST("/api/lates/create")
     fun createLate(
-        @Header("Cookie") sessionId: String,
         @Part("data") request : RequestBody,
         @Part profile : MultipartBody.Part ? = null) : Call<ApiResponse>
 

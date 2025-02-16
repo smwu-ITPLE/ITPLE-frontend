@@ -15,3 +15,8 @@ data class ShareLateData(
     val userName : String,
     val userPhonenumber: String
 )
+
+data class LateListItem(
+    val id: Int,
+    val name: String
+)

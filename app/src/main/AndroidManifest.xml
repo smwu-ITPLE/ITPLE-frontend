@@ -27,5 +27,21 @@
             android:theme="@style/Theme.Maeumgil"
             android:windowSoftInputMode="adjustNothing"/>
 
+        <activity
+            android:name=".DeepLinkActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- 앱에서 열릴 도메인 설정 -->
+                <data
+                    android:host="lates"
+                    android:scheme="maeumgil"/>
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>
