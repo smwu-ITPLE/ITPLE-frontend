@@ -20,6 +20,7 @@ import retrofit2.Response
 class ManageListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var lateListAdapter: LateListAdapter
+    private val lateList = mutableListOf<LateListItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +30,26 @@ class ManageListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        lateListAdapter = LateListAdapter(
+            onManageMessagesClick = { item ->
+                Toast.makeText(requireContext(), "${item.name} 메시지 관리", Toast.LENGTH_SHORT).show()
+            },
+            onManageDonationsClick = { item ->
+                Toast.makeText(requireContext(), "${item.name} 부의금 관리", Toast.LENGTH_SHORT).show()
+            },
+            onShareClick = { item ->
+                val fragment = ManageShareFragment.newInstance(item.id)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onDeleteClick = { item ->
+                showDeleteDialog(item.id, item.name)
+            }
+        )
+
+        recyclerView.adapter = lateListAdapter
         loadLateList()
 
         val backButton = view.findViewById<ImageView>(R.id.back_button)
@@ -44,18 +65,17 @@ class ManageListFragment : Fragment() {
         apiService.getLateList().enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful) {
-                    val lateList = response.body()?.data as? List<Map<String, Any>>
-                    val formattedList = lateList?.map {
-                        LateListItem(
-                            id = (it["id"] as? Number)?.toInt() ?: 0,
-                            name = it["name"] as? String ?: ""
+                    val lateListResponse = response.body()?.data as? List<Map<String, Any>>
+                    lateList.clear()
+                    lateListResponse?.forEach {
+                        lateList.add(
+                            LateListItem(
+                                id = (it["id"] as? Number)?.toInt() ?: 0,
+                                name = it["name"] as? String ?: ""
+                            )
                         )
-                    } ?: emptyList()
-
-                    lateListAdapter = LateListAdapter(formattedList) { item ->
-                        Toast.makeText(requireContext(), "${item.name} 선택됨", Toast.LENGTH_SHORT).show()
                     }
-                    recyclerView.adapter = lateListAdapter
+                    lateListAdapter.setLateList(lateList)
                 }
             }
 
@@ -63,6 +83,13 @@ class ManageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "서버와의 연결 오류", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun showDeleteDialog(lateId: Int, lateName: String) {
+        val deleteDialog = ManageDeleteFragment.newInstance(lateId, lateName) {
+            loadLateList() // 삭제 후 리스트 갱신
+        }
+        deleteDialog.show(parentFragmentManager, "ManageDeleteFragment")
     }
 
     companion object {

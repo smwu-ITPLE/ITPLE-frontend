@@ -10,8 +10,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smwuitple.maeumgil.R
 import com.smwuitple.maeumgil.dto.response.LateListItem
 
-class LateListAdapter(private val lateList: List<LateListItem>, private val onItemClick: (LateListItem) -> Unit) :
-    RecyclerView.Adapter<LateListAdapter.LateListViewHolder>() {
+class LateListAdapter(
+    private val onManageMessagesClick: (LateListItem) -> Unit,
+    private val onManageDonationsClick: (LateListItem) -> Unit,
+    private val onDeleteClick: (LateListItem) -> Unit,
+    private val onShareClick: (LateListItem) -> Unit
+) : RecyclerView.Adapter<LateListAdapter.LateListViewHolder>() {
+
+    private val lateList = mutableListOf<LateListItem>()
+
+    // 리스트 업데이트 메서드 추가
+    fun setLateList(newList: List<LateListItem>) {
+        lateList.clear()
+        lateList.addAll(newList)
+        notifyDataSetChanged()
+    }
 
     inner class LateListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val memorialName: TextView = itemView.findViewById(R.id.txt_memorial_name)
@@ -32,22 +45,22 @@ class LateListAdapter(private val lateList: List<LateListItem>, private val onIt
 
         // 메시지 관리 버튼 클릭 이벤트
         holder.btnManageMessages.setOnClickListener {
-            onItemClick(item)
+            onManageMessagesClick(item)
         }
 
         // 부의금 관리 버튼 클릭 이벤트
         holder.btnManageDonations.setOnClickListener {
-            onItemClick(item)
+            onManageDonationsClick(item)
         }
 
         // 공유 버튼 클릭 이벤트
         holder.btnShare.setOnClickListener {
-            // 공유 기능 추가
+            onShareClick(item)
         }
 
         // 삭제 버튼 클릭 이벤트
         holder.btnDelete.setOnClickListener {
-            // 삭제 기능 추가
+            onDeleteClick(item)
         }
     }
 
