@@ -34,3 +34,14 @@ data class Archive(
     val nickname: String,
     val content: String
 )
+
+data class LateOwnerResponse(
+    val data: List<Owner2>,
+    val message: String,
+    val status: String
+)
+
+data class Owner2(
+    val id: Int,
+    val name: String
+)

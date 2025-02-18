@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@android:color/white">
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/grid_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        app:columnCount="2">
+
+        <!-- 첫 번째 카드 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="20dp">
+
+            <!-- 봉투 이미지 -->
+            <ImageView
+                android:id="@+id/img_envelope_1"
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_condolence1" />
+
+            <!-- 보낸이 > 받는이 -->
+            <TextView
+                android:id="@+id/txt_sender_receiver_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="김계수 > 이기준"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <!-- 금액 -->
+            <TextView
+                android:id="@+id/txt_amount_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50,000원"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <!-- 두 번째 카드 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="20dp">
+
+            <!-- 봉투 이미지 -->
+            <ImageView
+                android:id="@+id/img_envelope_2"
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_condolence2" />
+
+            <!-- 보낸이 > 받는이 -->
+            <TextView
+                android:id="@+id/txt_sender_receiver_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="김계수 > 이미녀"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <!-- 금액 -->
+            <TextView
+                android:id="@+id/txt_amount_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50,000원"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </androidx.gridlayout.widget.GridLayout>
+
+</LinearLayout>

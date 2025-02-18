@@ -54,6 +54,8 @@ class PrivateMainFragment : Fragment() {
         val donationButton = view.findViewById<Button>(R.id.btn_chat2)
         val writeButton = view.findViewById<ImageView>(R.id.write_button)
 
+        val safeLateId = lateId ?: ""
+
         // 뒤로 가기 버튼 클릭 시 이전 화면으로 이동
         backButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -70,17 +72,18 @@ class PrivateMainFragment : Fragment() {
 
         // 조문 메시지 버튼 클릭
         chatButton.setOnClickListener {
-
+            val dialog = OwnerListFragment.newInstance(safeLateId, "message")
+            dialog.show(parentFragmentManager, "OwnerListFragment")
         }
 
         // 부의금 송금 버튼 클릭
         donationButton.setOnClickListener {
-
+            val dialog = OwnerListFragment.newInstance(safeLateId, "payment")
+            dialog.show(parentFragmentManager, "OwnerListFragment")
         }
 
         // 아카이브 작성 버튼 클릭
         writeButton.setOnClickListener {
-            val safeLateId = lateId ?: ""
             val dialog = Archieve1Fragment.newInstance(safeLateId)
             dialog.show(parentFragmentManager, "Archieve1Fragment")
         }
