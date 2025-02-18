@@ -12,4 +12,7 @@ interface ManageApiService {
 
     @GET("/api/manage/latelist")
     fun getLateList(): Call<ApiResponse>
+
+    @GET("/api/manage/{lateId}/pay")
+    fun getPayList(@Path("lateId") lateId : String) : Call<ManagePayResponse>
 }

@@ -37,8 +37,15 @@ class ManageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "${item.name} 메시지 관리", Toast.LENGTH_SHORT).show()
             },
             onManageDonationsClick = { item ->
-                Toast.makeText(requireContext(), "${item.name} 부의금 관리", Toast.LENGTH_SHORT).show()
-            },
+                val lateId = item.id.toString()
+
+                val manageFundFragment = ManageFundFragment.newInstance(lateId)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, manageFundFragment)
+                    .addToBackStack(null)  // 뒤로가기 시 이전 화면으로 돌아갈 수 있도록 추가
+                    .commit()
+            }
+            ,
             onShareClick = { item ->
                 showshare(item.id, item.name)
             },
