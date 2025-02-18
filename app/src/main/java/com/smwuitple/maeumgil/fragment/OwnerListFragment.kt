@@ -3,6 +3,7 @@ package com.smwuitple.maeumgil.fragment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,6 +99,7 @@ class OwnerListFragment : DialogFragment() {
 
     private fun moveToNextFragment(owner: Owner2) {
         val bundle = Bundle().apply {
+            putString("late_id", lateId)
             putString("owner_name", owner.name)
             putInt("owner_id", owner.id)
         }
