@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +13,7 @@
     <CheckBox
         android:id="@+id/checkbox_select"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"/>
+        android:layout_height="wrap_content"/>
 
     <!-- 이름 -->
     <TextView
@@ -24,16 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="List item"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginStart="12dp" />
+        android:layout_marginStart="10dp" />
 
     </LinearLayout>
-    <!-- 구분선 -->
-    <View
-        android:layout_width="340dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/black" />
-
 </LinearLayout>
