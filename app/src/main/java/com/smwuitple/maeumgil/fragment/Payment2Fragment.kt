@@ -127,9 +127,8 @@ class Payment2Fragment : Fragment() {
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "부의금 전송 성공!", Toast.LENGTH_SHORT).show()
 
-                    val privateMainFragment = PrivateMainFragment.newInstance(lateId ?: "")
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, privateMainFragment)
+                        .replace(R.id.fragment_container, HomeFragment.newInstance())
                         .commit()
 
                 } else {
