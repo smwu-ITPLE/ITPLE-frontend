@@ -28,6 +28,16 @@ class HomeFragment : Fragment() {
         profileTextView = view.findViewById(R.id.profile_text)
         loadUserProfile()
 
+        // 🔹 촬영 버튼 클릭 이벤트 추가
+        val cameraButton = view.findViewById<View>(R.id.camera_button)
+        cameraButton.setOnClickListener {
+            Log.d("HomeFragment", "📸 촬영 버튼을 눌렀습니다!") // 클릭 확인 로그 추가
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CameraFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
 
         // 조문 공간 프로필 버튼 클릭 이벤트
         val profileButton = view.findViewById<View>(R.id.profile_button)
