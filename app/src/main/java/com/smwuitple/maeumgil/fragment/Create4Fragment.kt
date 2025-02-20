@@ -57,14 +57,25 @@ class Create4Fragment : Fragment() {
         memorialMessage.text = "$memorialName 님의\n조문 공간이 생성되었습니다"
 
         // 프로필 이미지 로드
-        if (!profileUri.isNullOrEmpty()) {
+        // profileUri를 임시 변수에 저장하여 스마트 캐스트 가능하게 함
+        val tempProfileUri = profileUri
+
+        if (!tempProfileUri.isNullOrEmpty()) {
+            val glidePath = if (tempProfileUri.startsWith("http")) {
+                tempProfileUri // 서버 URL이면 그대로 사용
+            } else {
+                "file://${tempProfileUri.replace("\\", "/")}" // 로컬 파일이면 file:// 추가
+            }
+
             Glide.with(this)
-                .load(Uri.parse(profileUri))
+                .load(glidePath)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(memorialImageView)
         } else {
             memorialImageView.setImageResource(R.drawable.ic_launcher_foreground)
         }
+
+
 
         // 공유 버튼 클릭 이벤트
         shareButton.setOnClickListener {

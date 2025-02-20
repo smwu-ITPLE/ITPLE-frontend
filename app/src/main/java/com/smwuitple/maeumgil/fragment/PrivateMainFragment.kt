@@ -149,8 +149,19 @@ class PrivateMainFragment : Fragment() {
                         locationTextView.text = it.location
                         deathDateTextView.text = formatDateToKoreanStyle(it.dateDeath)
 
-                        // 프로필 이미지 로드 (Glide 사용)
-                        Glide.with(requireContext()).load(it.profile).into(profileImageView)
+                        // 프로필 이미지 로드
+                        val profilePath = it.profile
+                        val glidePath = if (profilePath.startsWith("http")) {
+                            profilePath // 서버 URL이면 그대로 사용
+                        } else {
+                            "file://${profilePath.replace("\\", "/")}" // 로컬 파일이면 file:// 추가
+                        }
+
+                        Glide.with(requireContext())
+                            .load(glidePath)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .into(profileImageView)
+
 
                         // 상주 정보 리스트 추가
                         ownersListContainer.removeAllViews()
