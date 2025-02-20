@@ -33,6 +33,15 @@ class ManageListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         lateListAdapter = LateListAdapter(
+            onPrivateClick = {item ->
+                val lateId = item.id.toString()
+
+                val managePrivateFragment = ManagePrivateFragment .newInstance(lateId)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, managePrivateFragment)
+                    .addToBackStack(null)  // 뒤로가기 시 이전 화면으로 돌아갈 수 있도록 추가
+                    .commit()
+            },
             onManageMessagesClick = { item ->
                 val lateId = item.id.toString()
 
