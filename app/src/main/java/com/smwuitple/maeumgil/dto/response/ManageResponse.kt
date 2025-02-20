@@ -45,3 +45,17 @@ data class PayDetail(
     val amount: Int,
     val createdAt: String
 )
+
+data class ManageMessageResponse(
+    val data: List<MessageDetail>?,
+    val message: String,
+    val status: String
+)
+
+data class MessageDetail(
+    val senderName: String,
+    val receiverName: String,
+    val content: String?,
+    val attachment: String?, // 파일 경로 (이미지 또는 비디오)
+    val createdAt: String
+)
