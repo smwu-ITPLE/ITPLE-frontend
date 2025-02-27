@@ -34,6 +34,8 @@ class MainFragment : Fragment() {
                 .commit()
         }
 
+
+
         jumpButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment.newInstance())
