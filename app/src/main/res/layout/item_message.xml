@@ -35,20 +35,14 @@
             android:textColor="@android:color/black"
             android:layout_marginBottom="8dp" />
 
-        <!-- 첨부 파일 (이미지 또는 비디오) -->
+        <!-- 동영상 썸네일 (WebView 실행 버튼) -->
         <ImageView
-            android:id="@+id/img_attachment"
-            android:layout_width="330dp"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
-
-        <VideoView
-            android:id="@+id/video_attachment"
+            android:id="@+id/img_video_thumbnail"
             android:layout_width="330dp"
             android:layout_height="200dp"
             android:visibility="gone"
-            android:background="@color/black" />
+            android:scaleType="centerCrop"
+            android:src="@color/white" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

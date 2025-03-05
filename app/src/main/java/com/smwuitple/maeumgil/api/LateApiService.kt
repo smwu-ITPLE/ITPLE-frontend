@@ -41,7 +41,7 @@ interface LateApiService {
     fun sendMessage(
         @Path("lateId") lateId : String,
         @Part("data") request : RequestBody,
-        @Part profile : MultipartBody.Part ? = null): Call<ApiResponse>
+        @Part attachment : MultipartBody.Part ? = null): Call<ApiResponse>
 
     @POST("/api/lates/{lateId}/archive")
     fun postArchive(

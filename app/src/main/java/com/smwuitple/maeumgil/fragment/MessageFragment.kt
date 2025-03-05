@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -123,13 +125,22 @@ class MessageFragment : Fragment() {
         // 파일 첨부 처리
         var filePart: MultipartBody.Part? = null
         if (selectedVideoUri != null) {
+            val fileSize = getFileSize(selectedVideoUri!!)
+            if (fileSize > 2L * 1024 * 1024 * 1024) {
+                Toast.makeText(requireContext(), "파일이 너무 큽니다.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             val file = File(requireContext().cacheDir, "uploaded_video.mp4")
             requireContext().contentResolver.openInputStream(selectedVideoUri!!)?.use { inputStream ->
                 file.outputStream().use { output -> inputStream.copyTo(output) }
             }
-            val requestFile = file.asRequestBody("video/*".toMediaTypeOrNull())
-            filePart = MultipartBody.Part.createFormData("profile", file.name, requestFile)
+
+            val mimeType = requireContext().contentResolver.getType(selectedVideoUri!!) ?: "video/mp4"
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+            filePart = MultipartBody.Part.createFormData("attachment", file.name, requestFile)
         }
+
 
         apiService.sendMessage(lateId!!, requestBody, filePart).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
@@ -137,7 +148,10 @@ class MessageFragment : Fragment() {
                     Toast.makeText(requireContext(), "조문 메시지 전송 성공!", Toast.LENGTH_SHORT).show()
                     moveToPrivateMain()
                 } else {
-                    Toast.makeText(requireContext(), "전송 실패: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                    val errorJson = response.errorBody()?.string()
+                    val jsonObject = JSONObject(errorJson)
+                    val errorMessage = jsonObject.getString("message")
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -146,12 +160,23 @@ class MessageFragment : Fragment() {
             }
         })
     }
+    private fun getFileSize(uri: Uri): Long {
+        var fileSize: Long = 0
+        val cursor = requireContext().contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+            if (sizeIndex != -1) {
+                it.moveToFirst()
+                fileSize = it.getLong(sizeIndex)
+            }
+        }
+        return fileSize
+    }
+
 
     private fun moveToPrivateMain() {
-        val privateMainFragment = PrivateMainFragment.newInstance(lateId)
-
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, privateMainFragment)
+            .replace(R.id.fragment_container, HomeFragment.newInstance())
             .commit()
     }
 
