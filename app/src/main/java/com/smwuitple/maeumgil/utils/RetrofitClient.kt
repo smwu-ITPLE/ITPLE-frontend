@@ -44,14 +44,22 @@ object RetrofitClient {
     fun getLateApi(context: Context): LateApiService {
         if (retrofitInstance == null) {
             val client = OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)  // 서버 연결 대기 시간 (기본값: 10초)
-                .readTimeout(60, TimeUnit.SECONDS)     // 서버 응답 대기 시간 (기본값: 10초)
-                .writeTimeout(60, TimeUnit.SECONDS)    // 요청 데이터 전송 대기 시간 (기본값: 10초)
+                .connectTimeout(5, TimeUnit.MINUTES) // 서버 연결 타임아웃 (기본 10초 → 5분)
+                .readTimeout(5, TimeUnit.MINUTES) // 응답 읽기 타임아웃
+                .writeTimeout(5, TimeUnit.MINUTES) // 요청 보내기 타임아웃
+                .retryOnConnectionFailure(true)  // 연결 실패 시 재시도
+                .addInterceptor { chain ->
+                    val original = chain.request()
+                    val request = original.newBuilder()
+                        .header("Expect", "100-continue")  // 대용량 업로드 최적화
+                        .build()
+                    chain.proceed(request)
+                }
                 .build()
 
             retrofitInstance = Retrofit.Builder()
-                .baseUrl("https://your-api-url.com/") // 여기에 실제 API 주소 입력
-                .client(client) // 👈 OkHttpClient 적용
+                .baseUrl(BASE_URL)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
