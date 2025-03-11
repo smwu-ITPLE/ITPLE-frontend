@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -33,8 +33,14 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         val cameraButton: Button = view.findViewById(R.id.popup_btn)
+        val closeButton: TextView = view.findViewById(R.id.btn_close) // X 버튼 추가
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        // 🔹 X 버튼 클릭하면 이전 화면으로 돌아감
+        closeButton.setOnClickListener {
+            parentFragmentManager.popBackStack() // 현재 Fragment 제거하고 이전 화면으로 이동
+        }
 
         cameraButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
