@@ -234,6 +234,7 @@ class Payment2Fragment : Fragment() {
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "부의금 전송 성공!", Toast.LENGTH_SHORT).show()
 
+                    PaymentSuccessFragment.newInstance().show(parentFragmentManager, "PaymentSuccessFragment")
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment.newInstance())
                         .commit()
