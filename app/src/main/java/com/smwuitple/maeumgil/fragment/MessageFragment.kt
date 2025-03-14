@@ -146,7 +146,11 @@ class MessageFragment : Fragment() {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "조문 메시지 전송 성공!", Toast.LENGTH_SHORT).show()
-                    moveToPrivateMain()
+
+                    MessageSuccessFragment.newInstance().show(parentFragmentManager, "MessageSuccessFragment")
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, HomeFragment.newInstance())
+                        .commit()
                 } else {
                     val errorJson = response.errorBody()?.string()
                     val jsonObject = JSONObject(errorJson)
@@ -173,12 +177,6 @@ class MessageFragment : Fragment() {
         return fileSize
     }
 
-
-    private fun moveToPrivateMain() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, HomeFragment.newInstance())
-            .commit()
-    }
 
     companion object {
         private const val ARG_LATE_ID = "late_id"
