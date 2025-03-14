@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private const val BASE_URL = "http://192.168.219.109:8081" //"http://13.125.216.241:8081"
+    private const val BASE_URL = "http://192.168.0.8:8081" //"http://13.125.216.241:8081"
 
     // Retrofit 인스턴스를 싱글톤으로 유지
     @Volatile
