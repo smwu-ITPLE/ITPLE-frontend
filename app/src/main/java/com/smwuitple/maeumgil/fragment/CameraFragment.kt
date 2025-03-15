@@ -1,8 +1,10 @@
 package com.smwuitple.maeumgil.fragment
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +12,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.video.*
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.R
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -24,6 +28,10 @@ class CameraFragment : Fragment() {
 
     private lateinit var previewView: PreviewView
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var cameraProvider: ProcessCameraProvider
+    private var videoCapture: VideoCapture<Recorder>? = null
+    private var recording: Recording? = null
+    private lateinit var recordButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,26 +40,30 @@ class CameraFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_camera, container, false)
 
         previewView = view.findViewById(R.id.previewView)
-        val cameraButton: Button = view.findViewById(R.id.popup_btn)
-        val closeButton: TextView = view.findViewById(R.id.btn_close) // X 버튼 추가
+        recordButton = view.findViewById(R.id.popup_btn)
+        val closeButton: TextView = view.findViewById(R.id.btn_close)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // 🔹 X 버튼 클릭하면 이전 화면으로 돌아감
         closeButton.setOnClickListener {
-            parentFragmentManager.popBackStack() // 현재 Fragment 제거하고 이전 화면으로 이동
+            parentFragmentManager.popBackStack()
         }
 
-        cameraButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                startCamera()
+        recordButton.setOnClickListener {
+            if (recording != null) {
+                stopRecording()
             } else {
-                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                startRecording()
             }
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            startCamera()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
         return view
@@ -61,22 +73,62 @@ class CameraFragment : Fragment() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
-            try {
-                val cameraProvider = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
 
-                val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
-                }
-
-                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview)
-
-            } catch (exc: Exception) {
-                Log.e("CameraFragment", "카메라 실행 실패: ", exc)
+            val preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(previewView.surfaceProvider)
             }
+
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            val recorder = Recorder.Builder()
+                .setQualitySelector(QualitySelector.from(Quality.HD))
+                .build()
+            videoCapture = VideoCapture.withOutput(recorder)
+
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, videoCapture)
+
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun startRecording() {
+        val videoCapture = this.videoCapture ?: return
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "video_${System.currentTimeMillis()}")
+            put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
+        }
+
+        val outputOptions = MediaStoreOutputOptions.Builder(
+            requireContext().contentResolver,
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        ).setContentValues(contentValues).build()
+
+        recording = videoCapture.output
+            .prepareRecording(requireContext(), outputOptions)
+            .start(ContextCompat.getMainExecutor(requireContext())) { event ->
+                when (event) {
+                    is VideoRecordEvent.Start -> {
+                        recordButton.text = "녹화 중지"
+                    }
+                    is VideoRecordEvent.Finalize -> {
+                        if (!event.hasError()) {
+                            Log.d("CameraFragment", "Video saved: ${event.outputResults.outputUri}")
+                        } else {
+                            Log.e("CameraFragment", "Recording error: ${event.error}" )
+                        }
+                        recording = null
+                        recordButton.text = "촬영하기"
+                    }
+                }
+            }
+    }
+
+
+    private fun stopRecording() {
+        recording?.stop()
+        recording = null
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
