@@ -13,11 +13,18 @@ import java.nio.ByteBuffer
 
 object VideoProcessor {
 
-    fun applyFilters(context: Context, inputVideoPath: String, outputVideoPath: String) {
-        val frames = extractFrames(inputVideoPath)
-        val processedFrames = frames.map { frame -> processFrame(frame) }
-        saveProcessedVideo(context, processedFrames, outputVideoPath)
+    fun applyFilters(context: Context, inputVideoPath: String, outputVideoPath: String, callback: (Boolean) -> Unit) {
+        try {
+            val frames = extractFrames(inputVideoPath)
+            val processedFrames = frames.map { frame -> processFrame(frame) }
+            saveProcessedVideo(context, processedFrames, outputVideoPath)
+            callback(true)  // 성공 시 true 반환
+        } catch (e: Exception) {
+            Log.e("VideoProcessor", "Video processing failed", e)
+            callback(false) // 실패 시 false 반환
+        }
     }
+
 
     private fun extractFrames(videoPath: String): List<Bitmap> {
         val retriever = MediaMetadataRetriever()

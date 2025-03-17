@@ -151,7 +151,7 @@ class CameraFragment : Fragment() {
 
         VideoProcessor.applyFilters(requireContext(), videoPath, outputVideoPath) { success ->
             if (success) {
-                saveVideoToGallery(outputVideoPath) // ✅ 필터 처리 후 저장 실행
+                saveVideoToGallery(outputVideoPath) // 필터 처리 후 저장 실행
             } else {
                 Log.e("CameraFragment", "Video processing failed")
             }
