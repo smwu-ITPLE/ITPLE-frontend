@@ -12,7 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.smwuitple.maeumgil.R
-import com.smwuitple.maeumgil.dto.request.ArchiveRequest
+import com.smwuitple.maeumgil.utils.CurseWordDetector
 
 class Archieve1Fragment(private val lateId: String) : DialogFragment() {
 
@@ -41,9 +41,14 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
                 return@setOnClickListener
             }
 
+            // 욕설 필터링
+            val (filteredMessage, detected) = CurseWordDetector.filterText(message)
+            messageInput.setText(filteredMessage) // 필터링된 텍스트 적용
+
             val senderName = if (name.isEmpty()) "익명" else name
 
-            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, message)
+            // Archieve2Fragment로 이동
+            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, filteredMessage)
             processingFragment.show(parentFragmentManager, "Archieve2Fragment")
             dismiss()
         }
