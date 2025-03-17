@@ -8,7 +8,9 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
+        android:name=".App"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
@@ -47,13 +49,14 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
-                <!-- 앱에서 열릴 도메인 설정 -->
                 <data
                     android:host="lates"
                     android:scheme="maeumgil"/>
             </intent-filter>
         </activity>
+
+        <!-- ✅ 추가된 코드: 필터 적용 후 영상 확인 액티비티 -->
+        <activity android:name=".FilteredVideoActivity"/>
 
     </application>
 </manifest>
