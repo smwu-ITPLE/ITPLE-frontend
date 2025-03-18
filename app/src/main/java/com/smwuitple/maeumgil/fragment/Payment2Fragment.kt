@@ -1,15 +1,25 @@
 package com.smwuitple.maeumgil.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.*
 import com.smwuitple.maeumgil.R
+import com.smwuitple.maeumgil.api.LateApiService
+import com.smwuitple.maeumgil.api.PaymentApiService
+import com.smwuitple.maeumgil.dto.request.KakaoApproveRequest
+import com.smwuitple.maeumgil.dto.request.KakaoReadyRequest
 import com.smwuitple.maeumgil.dto.request.PaymentRequest
 import com.smwuitple.maeumgil.dto.response.ApiResponse
+import com.smwuitple.maeumgil.dto.response.KakaoApproveResponse
+import com.smwuitple.maeumgil.dto.response.KakaoReadyResponse
+import com.smwuitple.maeumgil.PaymentWebViewActivity
 import com.smwuitple.maeumgil.utils.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,11 +32,17 @@ class Payment2Fragment : Fragment() {
     private var ownerId: Int? = null
     private var amount: Int? = null
     private var selectedEnvelope: Int = 1 // 기본 봉투 설정 (1번 선택)
+    private var orderId: String = "ORDER_" + System.currentTimeMillis() // 고유 주문 ID 생성
 
     private lateinit var checkboxCard1: CheckBox
     private lateinit var checkboxCard2: CheckBox
     private lateinit var cardOption1: RelativeLayout
     private lateinit var cardOption2: RelativeLayout
+
+    private lateinit var paymentApiService: PaymentApiService
+    private lateinit var apiService2: LateApiService
+
+    private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +53,8 @@ class Payment2Fragment : Fragment() {
             amount = it.getInt("amount", 0)
         }
 
-        Log.d("Payment2Fragment", "onCreate - lateId: $lateId, ownerId: $ownerId, amount: $amount")
+        paymentApiService = RetrofitClient.getPaymentApi(requireContext())
+        apiService2 = RetrofitClient.getLateApi(requireContext())
     }
 
     override fun onCreateView(
@@ -51,6 +68,7 @@ class Payment2Fragment : Fragment() {
         val sendButton = view.findViewById<Button>(R.id.manage_button)
         val backButton = view.findViewById<ImageView>(R.id.back_button)
         val cancelButton = view.findViewById<Button>(R.id.home_button)
+
 
         // 카드 체크박스 및 레이아웃 바인딩
         checkboxCard1 = view.findViewById(R.id.checkbox_card_1)
@@ -90,7 +108,7 @@ class Payment2Fragment : Fragment() {
 
         // 송금 버튼 클릭 → API 호출
         sendButton.setOnClickListener {
-            sendPayment()
+            startKakaoPay()
         }
 
         return view
@@ -107,14 +125,103 @@ class Payment2Fragment : Fragment() {
         cardOption2.setBackgroundResource(if (envelope == 2) R.drawable.selected_card_background else R.drawable.default_card_background)
     }
 
-    private fun sendPayment() {
-
-        if (lateId.isNullOrEmpty() || ownerId == null || ownerId == -1 || amount == null || amount == 0) {
-            Toast.makeText(requireContext(), "잘못된 송금 정보입니다.", Toast.LENGTH_SHORT).show()
+    //카카오페이 ready 요청
+    private fun startKakaoPay() {
+        if (lateId.isNullOrEmpty() || ownerId == null || amount == null) {
+            Toast.makeText(requireContext(), "잘못된 결제 정보입니다.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val apiService = RetrofitClient.getLateApi(requireContext())
+        val paymentRequest = KakaoReadyRequest(
+            orderId = this.orderId,
+            userId = ownerId.toString(),
+            itemName = "부의금",
+            totalAmount = amount ?: 0,
+            vatAmount = (amount ?: 0) / 10,
+        )
+
+        paymentApiService.kakaopayReady(paymentRequest).enqueue(object : Callback<KakaoReadyResponse> {
+            override fun onResponse(call: Call<KakaoReadyResponse>, response: Response<KakaoReadyResponse>) {
+                val kakaoReadyResponse = response.body()
+
+                if (response.isSuccessful && kakaoReadyResponse != null) {
+                    val redirectUrl = kakaoReadyResponse.data?.next_redirect_pc_url
+                    Log.d("Payment2Fragment", "Redirect PC URL: $redirectUrl")
+
+                    if (!redirectUrl.isNullOrEmpty()) {
+                        openWebView(redirectUrl) // WebView 띄우기
+                    } else {
+                        Toast.makeText(requireContext(), "결제 준비 실패: Redirect URL 없음", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("Payment2Fragment", "Response 실패: ${response.errorBody()?.string()}")
+                    Toast.makeText(requireContext(), "결제 준비 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<KakaoReadyResponse>, t: Throwable) {
+                Log.e("Payment2Fragment", "API 호출 실패: ${t.message}")
+                Toast.makeText(requireContext(), "네트워크 오류", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun openWebView(url: String) {
+        val intent = Intent(requireContext(), PaymentWebViewActivity::class.java)
+        intent.putExtra("payment_url", url)
+        intent.putExtra("order_id", orderId)
+        intent.putExtra("user_id", ownerId.toString())
+        Log.d("Payment2", "🔍 Received Payment URL: $url")
+        startActivityForResult(intent, REQUEST_CODE_PAYMENT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_PAYMENT && resultCode == Activity.RESULT_OK) {
+            val pgToken = data?.getStringExtra("pg_token")
+
+            if (!pgToken.isNullOrEmpty()) {
+                Log.d("Payment2Fragment", "✅ Received pg_token in Fragment: $pgToken")
+                approveKakaoPay(pgToken)
+            } else {
+                Log.e("Payment2Fragment", "pg_token is null")
+                Toast.makeText(requireContext(), "결제 승인 실패 (pg_token 없음)", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // 카카오페이 결제 승인
+    fun approveKakaoPay(pgToken: String) {
+        val request = KakaoApproveRequest(
+            orderId = this.orderId,
+            userId = ownerId.toString(),
+            pgToken = pgToken
+        )
+
+        paymentApiService.kakaopayApprove(request).enqueue(object : Callback<KakaoApproveResponse> {
+            override fun onResponse(call: Call<KakaoApproveResponse>, response: Response<KakaoApproveResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        sendPayment() // 결제 승인 후 송금 API 호출
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "결제 승인 실패: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<KakaoApproveResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "서버와의 연결 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun sendPayment() {
+        // apiService2가 초기화되지 않았을 경우 방어 코드 추가
+        if (!::apiService2.isInitialized) {
+            Log.e("Payment2Fragment", "apiService2 is not initialized!")
+            return
+        }
 
         val paymentRequest = PaymentRequest(
             receiverId = ownerId ?: -1,
@@ -122,11 +229,12 @@ class Payment2Fragment : Fragment() {
             amount = amount ?: 0
         )
 
-        apiService.sendPayment(lateId!!, paymentRequest).enqueue(object : Callback<ApiResponse> {
+        apiService2.sendPayment(lateId!!, paymentRequest).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "부의금 전송 성공!", Toast.LENGTH_SHORT).show()
 
+                    PaymentSuccessFragment.newInstance().show(parentFragmentManager, "PaymentSuccessFragment")
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment.newInstance())
                         .commit()
@@ -146,5 +254,9 @@ class Payment2Fragment : Fragment() {
     // 숫자를 3자리마다 콤마(,)를 붙이는 함수
     private fun formatNumber(number: Int): String {
         return String.format("%,d", number)
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PAYMENT = 1001
     }
 }

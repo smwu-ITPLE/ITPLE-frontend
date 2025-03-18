@@ -34,39 +34,15 @@
         tools:ignore="MissingConstraints"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <!-- 메시지 목록을 위한 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/txt_intro"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="25dp">
-
-        <!-- 첫 번째 카드 -->
-        <LinearLayout
-            android:id="@+id/card_option_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/card_text_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="김계수 > 이미녀"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="8dp"/>
-
-            <VideoView
-                android:id="@+id/video_message"
-                android:layout_width="330dp"
-                android:layout_height="170dp"
-                android:layout_marginBottom="4dp"
-                android:background="@color/black" />
-
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

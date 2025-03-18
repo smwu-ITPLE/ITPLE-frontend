@@ -11,6 +11,7 @@ import com.smwuitple.maeumgil.R
 import com.smwuitple.maeumgil.dto.response.LateListItem
 
 class LateListAdapter(
+    private val onPrivateClick: (LateListItem) -> Unit,
     private val onManageMessagesClick: (LateListItem) -> Unit,
     private val onManageDonationsClick: (LateListItem) -> Unit,
     private val onDeleteClick: (LateListItem) -> Unit,
@@ -42,6 +43,11 @@ class LateListAdapter(
     override fun onBindViewHolder(holder: LateListViewHolder, position: Int) {
         val item = lateList[position]
         holder.memorialName.text = "故 ${item.name}님의 조문 공간"
+
+        // 조문공간 조회 클릭 이벤트
+        holder.memorialName.setOnClickListener {
+            onPrivateClick(item)
+        }
 
         // 메시지 관리 버튼 클릭 이벤트
         holder.btnManageMessages.setOnClickListener {

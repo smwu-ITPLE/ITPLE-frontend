@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="조문 메시지"
+        android:text="메시지 전송"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.5"
@@ -22,18 +22,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white" />
 
-    <TextView
-        android:id="@+id/btn_close"
+    <ImageView
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/btn_back"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp"
-        android:text=" X "
-        android:textSize="20sp"
-        android:textStyle="bold"
         />
 
     <!-- 받는 사람 이름 -->
@@ -104,10 +103,10 @@
 
     <ImageView
         android:id="@+id/video_upload_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:src="@drawable/ic_plus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/message_input_layout"/>
@@ -130,13 +129,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_video_label"/>
-
-
-
-
-
-
-
 
     <Button
         android:id="@+id/next_button"

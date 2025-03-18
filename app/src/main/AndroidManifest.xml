@@ -54,9 +54,17 @@
                     android:scheme="maeumgil"/>
             </intent-filter>
         </activity>
+      
+        <activity 
+            android:name=".FilteredVideoActivity"/>
+        <activity
+            android:name=".PaymentWebViewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <!-- ✅ 추가된 코드: 필터 적용 후 영상 확인 액티비티 -->
-        <activity android:name=".FilteredVideoActivity"/>
+        <activity android:name=".MessageWebViewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 </manifest>
