@@ -66,6 +66,44 @@
         app:layout_constraintTop_toBottomOf="@id/txt_memorial_message">
 
         <LinearLayout
+            android:id="@+id/myhistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/history"/>
+
+            <TextView
+                android:id="@+id/history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="나의 기록"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_front"
+                android:layout_weight="0.3"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:layout_margin="15dp"
+            android:background="@color/black"/>
+
+        <LinearLayout
             android:id="@+id/setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -17,4 +17,10 @@ interface ManageApiService {
 
     @GET("/api/manage/{lateId}/message")
     fun getMessageList(@Path("lateId") lateId : String) : Call<ManageMessageResponse>
+
+    @GET("/api/manage/message")
+    fun getMessages():Call<ManageMessageResponse>
+
+    @GET("/api/manage/pay")
+    fun getPayments(): Call<PayResponse>
 }

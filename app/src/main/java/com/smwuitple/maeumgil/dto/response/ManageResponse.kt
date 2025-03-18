@@ -59,3 +59,10 @@ data class MessageDetail(
     val attachment: String?, // 파일 경로 (이미지 또는 비디오)
     val createdAt: String
 )
+
+data class PayResponse(
+    val data: List<PayDetail>?,
+    val message: String,
+    val status: String
+)
+

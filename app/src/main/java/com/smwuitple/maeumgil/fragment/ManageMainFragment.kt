@@ -40,6 +40,14 @@ class ManageMainFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        val historyButton = view.findViewById<View>(R.id.myhistory)
+        historyButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageHistoryFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+
 
         // 조문 공간 프로필 버튼 클릭 이벤트
         val settingButton = view.findViewById<View>(R.id.setting)
