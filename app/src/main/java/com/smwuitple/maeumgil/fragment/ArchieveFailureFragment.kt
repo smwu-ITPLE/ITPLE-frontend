@@ -40,8 +40,14 @@ class ArchieveFailureFragment() : DialogFragment() {
 
 
     companion object {
-        fun newInstance(): ArchieveFailureFragment {
-            return ArchieveFailureFragment()
+        fun newInstance(lateId: String, nickname: String, content: String): ArchieveFailureFragment {
+            val fragment = ArchieveFailureFragment()
+            val args = Bundle()
+            args.putString("LATE_ID", lateId)
+            args.putString("NICKNAME", nickname)
+            args.putString("CONTENT", content)
+            fragment.arguments = args
+            return fragment
         }
     }
 }
