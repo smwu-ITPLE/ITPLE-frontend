@@ -14,10 +14,6 @@ import com.smwuitple.maeumgil.utils.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.smwuitple.maeumgil.fragment.CameraFragment
-
-
-
 
 class HomeFragment : Fragment() {
 
