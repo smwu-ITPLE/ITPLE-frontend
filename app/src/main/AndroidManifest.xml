@@ -8,7 +8,9 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
+        android:name=".App"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
@@ -47,14 +49,14 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
-                <!-- 앱에서 열릴 도메인 설정 -->
                 <data
                     android:host="lates"
                     android:scheme="maeumgil"/>
             </intent-filter>
         </activity>
-
+      
+        <activity 
+            android:name=".FilteredVideoActivity"/>
         <activity
             android:name=".PaymentWebViewActivity"
             android:exported="false"
