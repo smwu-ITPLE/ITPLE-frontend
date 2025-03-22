@@ -9,8 +9,9 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/../../녕이네/ITPLE-frontend-main" />
+            <option value="$PROJECT_DIR$/../../녕이네/ITPLE-frontend-main/app" />
+            <option value="$PROJECT_DIR$/../../녕이네/ITPLE-frontend-main/sdk" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
