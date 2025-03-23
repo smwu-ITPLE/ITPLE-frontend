@@ -1,2 +1,2 @@
-ninja: Entering directory `/Users/choiyoonryung/Desktop/녕이네/ITPLE-frontend-main/sdk/.cxx/Debug/6tu6h131/arm64-v8a'
+ninja: Entering directory `C:\Users\keji1\AndroidStudioProjects\maeumgil\sdk\.cxx\Debug\6tu6h131\arm64-v8a'
 ninja: no work to do.
