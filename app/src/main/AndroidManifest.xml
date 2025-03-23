@@ -54,8 +54,8 @@
                     android:scheme="maeumgil"/>
             </intent-filter>
         </activity>
-      
-        <activity 
+
+        <activity
             android:name=".FilteredVideoActivity"/>
         <activity
             android:name=".PaymentWebViewActivity"
