@@ -3,7 +3,6 @@ package com.smwuitple.maeumgil.fragment
 import android.Manifest
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -13,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
@@ -23,11 +23,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.utils.VideoProcessor
 import java.io.File
-import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.smwuitple.maeumgil.R
-
 
 class CameraFragment : Fragment() {
 
@@ -37,6 +35,9 @@ class CameraFragment : Fragment() {
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
     private lateinit var recordButton: Button
+    private lateinit var switchCameraButton: ImageButton
+
+    private var lensFacing = CameraSelector.LENS_FACING_BACK // 초기 후면 카메라
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +47,7 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         recordButton = view.findViewById(R.id.popup_btn)
+        switchCameraButton = view.findViewById(R.id.btn_switch_camera)
         val closeButton: TextView = view.findViewById(R.id.btn_close)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -60,6 +62,14 @@ class CameraFragment : Fragment() {
             } else {
                 startRecording()
             }
+        }
+
+        switchCameraButton.setOnClickListener {
+            lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK)
+                CameraSelector.LENS_FACING_FRONT
+            else
+                CameraSelector.LENS_FACING_BACK
+            startCamera()
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -84,7 +94,9 @@ class CameraFragment : Fragment() {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(lensFacing)
+                .build()
 
             val recorder = Recorder.Builder()
                 .setQualitySelector(QualitySelector.from(Quality.HD))
@@ -151,13 +163,12 @@ class CameraFragment : Fragment() {
 
         VideoProcessor.applyFilters(requireContext(), videoPath, outputVideoPath) { success ->
             if (success) {
-                saveVideoToGallery(outputVideoPath) // 필터 처리 후 저장 실행
+                saveVideoToGallery(outputVideoPath)
             } else {
                 Log.e("CameraFragment", "Video processing failed")
             }
         }
     }
-
 
     private fun saveVideoToGallery(videoPath: String) {
         val contentValues = ContentValues().apply {
