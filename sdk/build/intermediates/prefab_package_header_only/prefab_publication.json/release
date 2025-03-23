@@ -1,5 +1,5 @@
 {
-  "installationFolder": "C:\\Users\\keji1\\AndroidStudioProjects\\maeumgil\\sdk\\build\\intermediates\\prefab_package\\release\\prefab",
+  "installationFolder": "/Users/choiyoonryung/Desktop/녕이네/ITPLE-frontend-main/sdk/build/intermediates/prefab_package/release/prefab",
   "gradlePath": ":sdk",
   "packageInfo": {
     "packageName": "sdk",
@@ -8,7 +8,7 @@
     "modules": [
       {
         "moduleName": "opencv_jni_shared",
-        "moduleHeaders": "C:\\Users\\keji1\\AndroidStudioProjects\\maeumgil\\sdk\\native\\jni\\include",
+        "moduleHeaders": "/Users/choiyoonryung/Desktop/녕이네/ITPLE-frontend-main/sdk/native/jni/include",
         "moduleExportLibraries": [],
         "abis": []
       }
