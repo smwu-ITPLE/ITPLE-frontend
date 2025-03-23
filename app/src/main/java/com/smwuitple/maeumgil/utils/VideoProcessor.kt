@@ -1,14 +1,14 @@
 package com.smwuitple.maeumgil.utils
 
 import android.content.Context
-import android.graphics.Bitmap
+import android.graphics.*
 import android.media.*
 import android.util.Log
+import android.view.Surface
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import java.io.File
-import java.nio.ByteBuffer
 
 object VideoProcessor {
 
@@ -16,7 +16,7 @@ object VideoProcessor {
         try {
             val frames = extractFrames(inputVideoPath)
             val processedFrames = frames.map { frame -> processFrame(frame) }
-            saveProcessedVideo(context, processedFrames, outputVideoPath)
+            saveProcessedVideo(processedFrames, outputVideoPath)
             callback(true)
         } catch (e: Exception) {
             Log.e("VideoProcessor", "Video processing failed", e)
@@ -29,7 +29,7 @@ object VideoProcessor {
         retriever.setDataSource(videoPath)
 
         val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong() ?: 0L
-        val frameRate = 30 // FPS
+        val frameRate = 30
         val frameTime = 1000L / frameRate
 
         val frames = mutableListOf<Bitmap>()
@@ -62,8 +62,6 @@ object VideoProcessor {
 
         val blended = Mat()
         Core.addWeighted(mat, 0.7, blurredMat, 0.3, 0.0, blended)
-
-        // ✅ 하단 50% 흑백 적용
         maskedGray.copyTo(blended, mask)
 
         val resultBitmap = Bitmap.createBitmap(blended.cols(), blended.rows(), Bitmap.Config.ARGB_8888)
@@ -80,118 +78,95 @@ object VideoProcessor {
         return resultBitmap
     }
 
-    private fun saveProcessedVideo(context: Context, frames: List<Bitmap>, outputPath: String) {
+    private fun saveProcessedVideo(frames: List<Bitmap>, outputPath: String) {
         val width = frames[0].width
         val height = frames[0].height
         val frameRate = 30
-        val frameTime = 1000000L / frameRate
+        val frameTimeUs = 1_000_000L / frameRate
 
-        val mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height)
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, 4000000)
-        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, frameRate)
-        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1)
-        mediaFormat.setInteger(
-            MediaFormat.KEY_COLOR_FORMAT,
-            MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible
-        )
+        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height).apply {
+            setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
+            setInteger(MediaFormat.KEY_BIT_RATE, 4_000_000)
+            setInteger(MediaFormat.KEY_FRAME_RATE, frameRate)
+            setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1)
+        }
 
-        val mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
-        mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        mediaCodec.start()
+        val encoder = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
+        encoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+        val inputSurface = encoder.createInputSurface()
+        encoder.start()
 
-        val outputFile = File(outputPath)
-        val muxer = MediaMuxer(outputFile.absolutePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
+        val muxer = MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
+        val bufferInfo = MediaCodec.BufferInfo()
+
+        val paint = Paint().apply { isFilterBitmap = true }
+        val canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(canvasBitmap)
+
         var trackIndex = -1
         var muxerStarted = false
-
-        val bufferInfo = MediaCodec.BufferInfo()
-        var frameIndex = 0
+        var presentationTimeUs = 0L
 
         for (frame in frames) {
-            val inputBufferIndex = mediaCodec.dequeueInputBuffer(10000)
-            if (inputBufferIndex >= 0) {
-                val inputBuffer = mediaCodec.getInputBuffer(inputBufferIndex)!!
-                inputBuffer.clear()
-                val byteArray = getNV21FromBitmap(frame, width, height)
-                inputBuffer.put(byteArray)
-                mediaCodec.queueInputBuffer(
-                    inputBufferIndex, 0, byteArray.size, frameIndex * frameTime, 0
-                )
-                frameIndex++
-            }
+            // draw frame to canvas bitmap
+            canvas.drawColor(Color.BLACK)
+            canvas.drawBitmap(frame, 0f, 0f, paint)
 
-            var outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 10000)
+            // draw bitmap to inputSurface
+            val surfaceCanvas = inputSurface.lockCanvas(null)
+            surfaceCanvas.drawBitmap(canvasBitmap, 0f, 0f, null)
+            inputSurface.unlockCanvasAndPost(surfaceCanvas)
+
+            // wait to ensure encoding catches up
+            Thread.sleep(1000L / frameRate)
+
+            // drain encoded output
+            var outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0)
             while (outputBufferIndex >= 0) {
-                val outputBuffer = mediaCodec.getOutputBuffer(outputBufferIndex)!!
+                val encodedData = encoder.getOutputBuffer(outputBufferIndex) ?: continue
+                if (bufferInfo.size > 0) {
+                    encodedData.position(bufferInfo.offset)
+                    encodedData.limit(bufferInfo.offset + bufferInfo.size)
 
-                // ✅ muxer 준비가 안 됐으면 시작
-                if (!muxerStarted) {
-                    val newFormat = mediaCodec.outputFormat
-                    trackIndex = muxer.addTrack(newFormat)
-                    muxer.start()
-                    muxerStarted = true
+                    if (!muxerStarted) {
+                        trackIndex = muxer.addTrack(encoder.outputFormat)
+                        muxer.start()
+                        muxerStarted = true
+                    }
+
+                    bufferInfo.presentationTimeUs = presentationTimeUs
+                    muxer.writeSampleData(trackIndex, encodedData, bufferInfo)
+                    presentationTimeUs += frameTimeUs
                 }
 
-                muxer.writeSampleData(trackIndex, outputBuffer, bufferInfo)
-                mediaCodec.releaseOutputBuffer(outputBufferIndex, false)
-                outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 10000)
+                encoder.releaseOutputBuffer(outputBufferIndex, false)
+                outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0)
             }
         }
 
-        // ✅ 마지막 EOS (End of Stream) 전달
-        val eosInputBufferIndex = mediaCodec.dequeueInputBuffer(10000)
-        if (eosInputBufferIndex >= 0) {
-            val inputBuffer = mediaCodec.getInputBuffer(eosInputBufferIndex)
-            inputBuffer?.clear()
-            mediaCodec.queueInputBuffer(
-                eosInputBufferIndex, 0, 0,
-                frameIndex * frameTime, MediaCodec.BUFFER_FLAG_END_OF_STREAM
-            )
-        }
+        // send EOS
+        encoder.signalEndOfInputStream()
 
-        // 남은 output buffer 처리
-        var outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 10000)
+        // drain remaining output
+        var outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 10000)
         while (outputBufferIndex >= 0) {
-            val outputBuffer = mediaCodec.getOutputBuffer(outputBufferIndex)!!
-            muxer.writeSampleData(trackIndex, outputBuffer, bufferInfo)
-            mediaCodec.releaseOutputBuffer(outputBufferIndex, false)
-            outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 10000)
+            val encodedData = encoder.getOutputBuffer(outputBufferIndex) ?: continue
+            if (bufferInfo.size > 0 && muxerStarted) {
+                encodedData.position(bufferInfo.offset)
+                encodedData.limit(bufferInfo.offset + bufferInfo.size)
+                bufferInfo.presentationTimeUs = presentationTimeUs
+                muxer.writeSampleData(trackIndex, encodedData, bufferInfo)
+                presentationTimeUs += frameTimeUs
+            }
+            encoder.releaseOutputBuffer(outputBufferIndex, false)
+            outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 10000)
         }
 
-        mediaCodec.stop()
-        mediaCodec.release()
+        encoder.stop()
+        encoder.release()
         muxer.stop()
         muxer.release()
 
         Log.d("VideoProcessor", "✅ Filtered video saved at: $outputPath")
-    }
-
-    private fun getNV21FromBitmap(bitmap: Bitmap, width: Int, height: Int): ByteArray {
-        val argb = IntArray(width * height)
-        bitmap.getPixels(argb, 0, width, 0, 0, width, height)
-        val yuv = ByteArray(width * height * 3 / 2)
-
-        var yIndex = 0
-        var uvIndex = width * height
-
-        for (y in 0 until height) {
-            for (x in 0 until width) {
-                val color = argb[y * width + x]
-                val r = (color shr 16) and 0xFF
-                val g = (color shr 8) and 0xFF
-                val b = color and 0xFF
-
-                val yValue = (0.299 * r + 0.587 * g + 0.114 * b).toInt().coerceIn(0, 255)
-                yuv[yIndex++] = yValue.toByte()
-
-                if (y % 2 == 0 && x % 2 == 0) {
-                    val u = (-0.169 * r - 0.331 * g + 0.500 * b + 128).toInt().coerceIn(0, 255)
-                    val v = (0.500 * r - 0.419 * g - 0.081 * b + 128).toInt().coerceIn(0, 255)
-                    yuv[uvIndex++] = u.toByte()
-                    yuv[uvIndex++] = v.toByte()
-                }
-            }
-        }
-        return yuv
     }
 }
