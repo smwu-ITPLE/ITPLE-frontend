@@ -41,17 +41,25 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
                 return@setOnClickListener
             }
 
-            // 욕설 필터링
-            val (filteredMessage, detected) = CurseWordDetector.filterText(message)
-            messageInput.setText(filteredMessage) // 필터링된 텍스트 적용
-
             val senderName = if (name.isEmpty()) "익명" else name
 
-            // Archieve2Fragment로 이동
-            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, filteredMessage)
+            // 욕설 필터링 검사 (여기서만 수행)
+            val (_, detected) = CurseWordDetector.filterText(message)
+
+            if (detected) {
+                // 욕설 포함된 경우 → ArchieveFailureFragment 로 바로 이동
+                val failureFragment = ArchieveFailureFragment.newInstance(lateId, senderName, message)
+                failureFragment.show(parentFragmentManager, "ArchieveFailureFragment")
+                dismiss()
+                return@setOnClickListener
+            }
+
+            // 욕설 없을 경우 → 정상적으로 Archieve2Fragment 로 이동
+            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, message)
             processingFragment.show(parentFragmentManager, "Archieve2Fragment")
             dismiss()
         }
+
 
         return view
     }
