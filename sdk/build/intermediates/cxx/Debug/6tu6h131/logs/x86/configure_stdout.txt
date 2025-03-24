@@ -1,3 +1,0 @@
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/keji1/AndroidStudioProjects/maeumgil/sdk/.cxx/Debug/6tu6h131/x86

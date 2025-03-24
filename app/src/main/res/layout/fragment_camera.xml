@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.CameraFragment">
 
+    <!-- 미리보기 화면 -->
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
         android:layout_width="match_parent"
@@ -12,7 +14,22 @@
         android:scaleType="fitCenter"
         android:background="@android:color/black" />
 
-    <!-- 상단 바 (닫기 버튼 및 텍스트) -->
+    <!-- 카메라 전환 버튼: PreviewView 위에 배치 -->
+    <ImageButton
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/switch_camera"
+        android:src="@drawable/camera_switch"
+        android:scaleType="fitCenter"
+        app:tint="@null" />
+
+
+    <!-- 상단 바 (닫기 버튼 + 텍스트) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

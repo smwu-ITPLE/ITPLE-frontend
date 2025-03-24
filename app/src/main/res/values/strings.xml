@@ -22,4 +22,7 @@
     <string name="camera_instruction">촬영을 시작하면 배경이 자동으로 제거됩니다.&#10;준비가 완료되면 촬영을 진행해 주세요.</string>
     <string name="record_button">촬영하기</string>
 
+    <string name="switch_camera">카메라 전환</string>
+
+
 </resources>
