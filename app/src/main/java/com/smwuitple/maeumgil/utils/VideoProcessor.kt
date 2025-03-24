@@ -48,42 +48,50 @@ object VideoProcessor {
     }
 
     private fun processFrame(frame: Bitmap): Bitmap {
-        val mat = Mat()
-        Utils.bitmapToMat(frame, mat)
-        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGBA2BGR) // Ensure correct color space
+        val rgbaMat = Mat()
+        Utils.bitmapToMat(frame, rgbaMat) // RGBA로
+
+        val bgrMat = Mat()
+        Imgproc.cvtColor(rgbaMat, bgrMat, Imgproc.COLOR_RGBA2BGR)
 
         val blurredMat = Mat()
-        Imgproc.GaussianBlur(mat, blurredMat, Size(25.0, 25.0), 15.0)
+        Imgproc.GaussianBlur(bgrMat, blurredMat, Size(25.0, 25.0), 15.0)
 
         val grayMat = Mat()
-        Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_BGR2GRAY)
+        Imgproc.cvtColor(bgrMat, grayMat, Imgproc.COLOR_BGR2GRAY)
         val grayBGRMat = Mat()
         Imgproc.cvtColor(grayMat, grayBGRMat, Imgproc.COLOR_GRAY2BGR)
 
-        val height = mat.rows()
-        val mask = Mat(mat.size(), CvType.CV_8UC1, Scalar(0.0))
-        mask.rowRange(height / 2, height).setTo(Scalar(255.0))
+        val height = bgrMat.rows()
+        val mask = Mat(bgrMat.size(), CvType.CV_8UC1, Scalar(0.0))
+        mask.rowRange(height / 2, height).setTo(Scalar(255.0)) // 아랫부분만 흑백
 
         val maskedGray = Mat()
         Core.bitwise_and(grayBGRMat, grayBGRMat, maskedGray, mask)
 
         val blended = Mat()
-        Core.addWeighted(mat, 0.7, blurredMat, 0.3, 0.0, blended)
+        Core.addWeighted(bgrMat, 0.7, blurredMat, 0.3, 0.0, blended)
         maskedGray.copyTo(blended, mask)
 
-        val resultBitmap = Bitmap.createBitmap(blended.cols(), blended.rows(), Bitmap.Config.ARGB_8888)
-        Utils.matToBitmap(blended, resultBitmap)
+        val resultRgba = Mat()
+        Imgproc.cvtColor(blended, resultRgba, Imgproc.COLOR_BGR2RGBA) // 다시 RGBA로
 
-        mat.release()
+        val resultBitmap = Bitmap.createBitmap(resultRgba.cols(), resultRgba.rows(), Bitmap.Config.ARGB_8888)
+        Utils.matToBitmap(resultRgba, resultBitmap)
+
+        rgbaMat.release()
+        bgrMat.release()
         blurredMat.release()
         grayMat.release()
         grayBGRMat.release()
         mask.release()
         maskedGray.release()
         blended.release()
+        resultRgba.release()
 
         return resultBitmap
     }
+
 
     private fun saveProcessedVideo(frames: List<Bitmap>, outputPath: String) {
         val width = frames[0].width

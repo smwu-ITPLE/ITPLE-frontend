@@ -1,4 +1,3 @@
-// Updated CameraFragment.kt with loading UI handling and auto-close after processing
 package com.smwuitple.maeumgil.fragment
 
 import android.Manifest
