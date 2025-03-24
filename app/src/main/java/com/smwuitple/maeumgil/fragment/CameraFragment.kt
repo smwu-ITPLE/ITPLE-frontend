@@ -2,10 +2,11 @@ package com.smwuitple.maeumgil.fragment
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,17 +16,23 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.*
 import androidx.camera.view.PreviewView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.smwuitple.maeumgil.R
 import com.smwuitple.maeumgil.utils.VideoProcessor
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import com.smwuitple.maeumgil.R
+import android.net.Uri
+import android.os.Environment
+import java.io.FileOutputStream
+
 
 class CameraFragment : Fragment() {
 
@@ -37,7 +44,7 @@ class CameraFragment : Fragment() {
     private lateinit var recordButton: Button
     private lateinit var switchCameraButton: ImageButton
 
-    private var lensFacing = CameraSelector.LENS_FACING_BACK // 초기 후면 카메라
+    private var lensFacing = CameraSelector.LENS_FACING_BACK
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,11 +73,11 @@ class CameraFragment : Fragment() {
 
         switchCameraButton.setOnClickListener {
             lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK)
-                CameraSelector.LENS_FACING_FRONT
-            else
-                CameraSelector.LENS_FACING_BACK
+                CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
             startCamera()
         }
+
+        checkStoragePermission()
 
         if (ContextCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.CAMERA
@@ -112,40 +119,52 @@ class CameraFragment : Fragment() {
     private fun startRecording() {
         val videoCapture = this.videoCapture ?: return
 
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "video_${System.currentTimeMillis()}")
-            put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
-        }
-
-        val outputOptions = MediaStoreOutputOptions.Builder(
-            requireContext().contentResolver,
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        ).setContentValues(contentValues).build()
+        val videoFile = File(requireContext().filesDir, "video_${System.currentTimeMillis()}.mp4")
+        val outputOptions = FileOutputOptions.Builder(videoFile).build()
 
         recording = videoCapture.output
             .prepareRecording(requireContext(), outputOptions)
             .start(ContextCompat.getMainExecutor(requireContext())) { event ->
                 when (event) {
                     is VideoRecordEvent.Start -> {
+                        Log.d("CameraFragment", "🎬 녹화 시작됨")
                         recordButton.text = "녹화 중지"
                     }
                     is VideoRecordEvent.Finalize -> {
-                        if (!event.hasError()) {
-                            Log.d("CameraFragment", "Video saved: ${event.outputResults.outputUri}")
-                            processCapturedVideo(event.outputResults.outputUri.toString())
-                        } else {
-                            Log.e("CameraFragment", "Recording error: ${event.error}")
-                        }
-                        recording = null
+                        Log.d("CameraFragment", "✅ 녹화 종료됨")
                         recordButton.text = "촬영하기"
+                        recording = null
+
+                        if (!event.hasError()) {
+                            Log.d("CameraFragment", "📁 파일 경로: ${videoFile.absolutePath}")
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                processCapturedVideo(videoFile.absolutePath)
+                            }, 300)
+                        } else {
+                            Log.e("CameraFragment", "❌ 녹화 오류: ${event.error}")
+                        }
                     }
                 }
             }
     }
 
     private fun stopRecording() {
+        Log.d("CameraFragment", "🛑 녹화 중지 호출됨")
+        recordButton.text = "처리 중..."
         recording?.stop()
-        recording = null
+    }
+
+    private fun checkStoragePermission() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P &&
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                1001
+            )
+        }
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
@@ -161,36 +180,47 @@ class CameraFragment : Fragment() {
     private fun processCapturedVideo(videoPath: String) {
         val outputVideoPath = "${requireContext().filesDir}/processed_video.mp4"
 
+        Log.d("VideoProcessor", "🔥 Start processing video: $videoPath")
+
         VideoProcessor.applyFilters(requireContext(), videoPath, outputVideoPath) { success ->
             if (success) {
                 saveVideoToGallery(outputVideoPath)
             } else {
-                Log.e("CameraFragment", "Video processing failed")
+                Log.e("CameraFragment", "❌ Video processing failed")
             }
         }
     }
 
     private fun saveVideoToGallery(videoPath: String) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, "filtered_video_${System.currentTimeMillis()}.mp4")
-            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-            put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/Maeumgil")
+        val resolver = requireContext().contentResolver
+        val videoCollection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        } else {
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         }
 
-        val contentResolver = requireContext().contentResolver
-        val videoUri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues)
+        val newVideoDetails = ContentValues().apply {
+            put(MediaStore.Video.Media.DISPLAY_NAME, "filtered_video_${System.currentTimeMillis()}.mp4")
+            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/Maeumgil")
+            }
+        }
 
-        videoUri?.let {
-            val outputStream = contentResolver.openOutputStream(it)
-            val inputStream = File(videoPath).inputStream()
+        val videoUri = resolver.insert(videoCollection, newVideoDetails)
 
-            inputStream.copyTo(outputStream!!)
-            inputStream.close()
-            outputStream.close()
-
-            Log.d("CameraFragment", "Filtered video saved to gallery: $videoUri")
-        } ?: Log.e("CameraFragment", "Failed to save video to gallery")
+        if (videoUri != null) {
+            resolver.openOutputStream(videoUri).use { outputStream ->
+                File(videoPath).inputStream().use { inputStream ->
+                    inputStream.copyTo(outputStream!!)
+                }
+            }
+            Log.d("CameraFragment", "✅ Filtered video saved to gallery: $videoUri")
+        } else {
+            Log.e("CameraFragment", "❌ Failed to create MediaStore entry")
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

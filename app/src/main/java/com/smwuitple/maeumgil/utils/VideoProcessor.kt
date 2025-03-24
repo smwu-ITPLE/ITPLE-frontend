@@ -1,10 +1,12 @@
 package com.smwuitple.maeumgil.utils
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.media.*
 import android.util.Log
-import android.view.Surface
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -13,9 +15,13 @@ import java.io.File
 object VideoProcessor {
 
     fun applyFilters(context: Context, inputVideoPath: String, outputVideoPath: String, callback: (Boolean) -> Unit) {
+        Log.d("VideoProcessor", "🔥 Start processing video: $inputVideoPath")
         try {
             val frames = extractFrames(inputVideoPath)
-            val processedFrames = frames.map { frame -> processFrame(frame) }
+            val processedFrames = frames.mapIndexed { idx, frame ->
+                Log.d("VideoProcessor", "Processing frame ${idx + 1}/${frames.size}")
+                processFrame(frame)
+            }
             saveProcessedVideo(processedFrames, outputVideoPath)
             callback(true)
         } catch (e: Exception) {
@@ -44,6 +50,7 @@ object VideoProcessor {
     private fun processFrame(frame: Bitmap): Bitmap {
         val mat = Mat()
         Utils.bitmapToMat(frame, mat)
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGBA2BGR) // Ensure correct color space
 
         val blurredMat = Mat()
         Imgproc.GaussianBlur(mat, blurredMat, Size(25.0, 25.0), 15.0)
@@ -108,19 +115,15 @@ object VideoProcessor {
         var presentationTimeUs = 0L
 
         for (frame in frames) {
-            // draw frame to canvas bitmap
             canvas.drawColor(Color.BLACK)
             canvas.drawBitmap(frame, 0f, 0f, paint)
 
-            // draw bitmap to inputSurface
             val surfaceCanvas = inputSurface.lockCanvas(null)
             surfaceCanvas.drawBitmap(canvasBitmap, 0f, 0f, null)
             inputSurface.unlockCanvasAndPost(surfaceCanvas)
 
-            // wait to ensure encoding catches up
             Thread.sleep(1000L / frameRate)
 
-            // drain encoded output
             var outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0)
             while (outputBufferIndex >= 0) {
                 val encodedData = encoder.getOutputBuffer(outputBufferIndex) ?: continue
@@ -138,16 +141,13 @@ object VideoProcessor {
                     muxer.writeSampleData(trackIndex, encodedData, bufferInfo)
                     presentationTimeUs += frameTimeUs
                 }
-
                 encoder.releaseOutputBuffer(outputBufferIndex, false)
                 outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0)
             }
         }
 
-        // send EOS
         encoder.signalEndOfInputStream()
 
-        // drain remaining output
         var outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 10000)
         while (outputBufferIndex >= 0) {
             val encodedData = encoder.getOutputBuffer(outputBufferIndex) ?: continue
