@@ -1,3 +1,4 @@
+// Updated CameraFragment.kt with loading UI handling and auto-close after processing
 package com.smwuitple.maeumgil.fragment
 
 import android.Manifest
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
@@ -33,7 +35,6 @@ import android.net.Uri
 import android.os.Environment
 import java.io.FileOutputStream
 
-
 class CameraFragment : Fragment() {
 
     private lateinit var previewView: PreviewView
@@ -43,6 +44,7 @@ class CameraFragment : Fragment() {
     private var recording: Recording? = null
     private lateinit var recordButton: Button
     private lateinit var switchCameraButton: ImageButton
+    private lateinit var loadingContainer: View
 
     private var lensFacing = CameraSelector.LENS_FACING_BACK
 
@@ -55,6 +57,7 @@ class CameraFragment : Fragment() {
         previewView = view.findViewById(R.id.previewView)
         recordButton = view.findViewById(R.id.popup_btn)
         switchCameraButton = view.findViewById(R.id.btn_switch_camera)
+        loadingContainer = view.findViewById(R.id.loading_container)
         val closeButton: TextView = view.findViewById(R.id.btn_close)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -179,14 +182,19 @@ class CameraFragment : Fragment() {
 
     private fun processCapturedVideo(videoPath: String) {
         val outputVideoPath = "${requireContext().filesDir}/processed_video.mp4"
+        loadingContainer.visibility = View.VISIBLE
 
         Log.d("VideoProcessor", "🔥 Start processing video: $videoPath")
 
         VideoProcessor.applyFilters(requireContext(), videoPath, outputVideoPath) { success ->
+            loadingContainer.visibility = View.GONE
             if (success) {
                 saveVideoToGallery(outputVideoPath)
+                Toast.makeText(requireContext(), "영상 저장 완료", Toast.LENGTH_SHORT).show()
+                parentFragmentManager.popBackStack() // Close fragment
             } else {
                 Log.e("CameraFragment", "❌ Video processing failed")
+                Toast.makeText(requireContext(), "영상 처리 실패", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -220,7 +228,6 @@ class CameraFragment : Fragment() {
             Log.e("CameraFragment", "❌ Failed to create MediaStore entry")
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
