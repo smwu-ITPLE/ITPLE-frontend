@@ -26,16 +26,13 @@ object CurseWordDetector {
     }
 
     // 욕설 감지 및 변환
-    fun filterText(text: String): Pair<String, Boolean> {
-        var filteredText = text
-        var detected = false
-
+    fun hasCurseWords(text: String): Boolean {
         for (curse in curseWords) {
-            if (filteredText.contains(curse, ignoreCase = true)) {
-                filteredText = filteredText.replace(curse, "*".repeat(curse.length))
-                detected = true
+            if (text.contains(curse, ignoreCase = true)) {
+                return true
             }
         }
-        return Pair(filteredText, detected)
+        return false
     }
+
 }

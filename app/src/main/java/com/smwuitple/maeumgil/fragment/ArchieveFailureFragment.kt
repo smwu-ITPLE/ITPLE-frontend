@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.smwuitple.maeumgil.R
 
-class ArchieveFailureFragment() : DialogFragment() {
+class ArchieveFailureFragment : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +38,12 @@ class ArchieveFailureFragment() : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-
     companion object {
-        fun newInstance(lateId: String, nickname: String, content: String): ArchieveFailureFragment {
+        fun newInstance(lateId: String, nickname: String): ArchieveFailureFragment {
             val fragment = ArchieveFailureFragment()
             val args = Bundle()
             args.putString("LATE_ID", lateId)
             args.putString("NICKNAME", nickname)
-            args.putString("CONTENT", content)
             fragment.arguments = args
             return fragment
         }
