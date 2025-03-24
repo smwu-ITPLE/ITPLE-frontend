@@ -1,2 +1,0 @@
-ninja: Entering directory `/Users/choiyoonryung/Desktop/녕이네/ITPLE-frontend-main/sdk/.cxx/Debug/6tu6h131/arm64-v8a'
-ninja: no work to do.

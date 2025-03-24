@@ -29,7 +29,7 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
         val sendButton = view.findViewById<Button>(R.id.popup_btn)
 
         closeButton.setOnClickListener {
-            dismiss() // 다이얼로그 닫기
+            dismiss()
         }
 
         sendButton.setOnClickListener {
@@ -41,14 +41,21 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
                 return@setOnClickListener
             }
 
-            // 욕설 필터링
-            val (filteredMessage, detected) = CurseWordDetector.filterText(message)
-            messageInput.setText(filteredMessage) // 필터링된 텍스트 적용
-
             val senderName = if (name.isEmpty()) "익명" else name
 
-            // Archieve2Fragment로 이동
-            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, filteredMessage)
+            // 욕설 감지
+            val detected = CurseWordDetector.hasCurseWords(message)
+
+            if (detected) {
+                val loadingFragment = Archieve2Fragment.newInstance(lateId, senderName, message, isFailed = true)
+                loadingFragment.show(parentFragmentManager, "Archieve2Fragment")
+                dismiss()
+                return@setOnClickListener
+            }
+
+
+            // 욕설 없을 경우 다음 단계로
+            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, message)
             processingFragment.show(parentFragmentManager, "Archieve2Fragment")
             dismiss()
         }

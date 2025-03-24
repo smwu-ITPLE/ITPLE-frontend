@@ -10,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.smwuitple.maeumgil.R
-import com.smwuitple.maeumgil.utils.CurseWordDetector
 
 class Archieve2Fragment(
     private val lateId: String,
     private val nickname: String,
-    private val content: String
+    private val content: String,
+    private val isFailed: Boolean = false
 ) : DialogFragment() {
 
     override fun onCreateView(
@@ -24,24 +24,24 @@ class Archieve2Fragment(
     ): View? {
         val view = inflater.inflate(R.layout.fragment_archieve2, container, false)
 
-        // 욕설 데이터 로드
-        CurseWordDetector.loadCurseWords(requireContext())
-
+        // 딜레이 후 성공 프래그먼트 이동 (욕설 없는 상태로 여기까지 왔으므로 성공 확정)
         Handler(Looper.getMainLooper()).postDelayed({
-            val (_, detected) = CurseWordDetector.filterText(content)
-
-            if (detected) {
-                val failureFragment = ArchieveFailureFragment.newInstance(lateId, nickname, content)
+            if (isFailed) {
+                // 실패 프래그먼트로 이동
+                val failureFragment = ArchieveFailureFragment.newInstance(lateId, nickname)
                 failureFragment.show(parentFragmentManager, "ArchieveFailureFragment")
             } else {
+                // 성공 프래그먼트로 이동
                 val successFragment = ArchieveSuccessFragment.newInstance(lateId, nickname, content)
                 successFragment.show(parentFragmentManager, "ArchieveSuccessFragment")
             }
             dismiss()
-        }, 3000) // 3초 대기
+        }, 3000)
+
 
         return view
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -50,8 +50,14 @@ class Archieve2Fragment(
     }
 
     companion object {
-        fun newInstance(lateId: String, nickname: String, content: String): Archieve2Fragment {
-            return Archieve2Fragment(lateId, nickname, content)
+        fun newInstance(
+            lateId: String,
+            nickname: String,
+            content: String,
+            isFailed: Boolean = false
+        ): Archieve2Fragment {
+            return Archieve2Fragment(lateId, nickname, content, isFailed)
         }
     }
+
 }
