@@ -41,8 +41,8 @@ class LoginFragment : Fragment() {
 
             val request = LoginRequest(phonenumber, passwd)
 
-            // Retrofit을 통한 로그인 요청
-            RetrofitClient.userApi.loginUser(request).enqueue(object : Callback<LoginResponse> {
+            val apiService = RetrofitClient.getUserApi(requireContext())
+            apiService.loginUser(request).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     val headers = response.headers()
                     val cookies = headers.values("Set-Cookie")

@@ -9,3 +9,9 @@ data class ArchiveRequest(
     val nickname: String,
     val content: String
 )
+
+data class PaymentRequest(
+    val receiverId: Int,
+    val envelope: Int,
+    val amount: Int
+)

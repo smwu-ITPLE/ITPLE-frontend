@@ -55,8 +55,8 @@ class SignupFragment : Fragment() {
 
             val request = SignupRequest(name, phonenumber, passwd)
 
-            // Retrofit을 통한 회원가입 요청
-            RetrofitClient.userApi.signupUser(request).enqueue(object : Callback<ApiResponse> {
+            val apiService = RetrofitClient.getUserApi(requireContext())
+            apiService.signupUser(request).enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful) {
                         val result = response.body()

@@ -34,6 +34,7 @@ class SearchFragment : DialogFragment() {
 
         val closeButton = view.findViewById<TextView>(R.id.btn_close)
         val enterButton = view.findViewById<Button>(R.id.popup_btn)
+        val jumpButton = view.findViewById<TextView>(R.id.jump_text)
 
         closeButton.setOnClickListener {
             dismiss()
@@ -50,11 +51,21 @@ class SearchFragment : DialogFragment() {
             val request = SearchLateRequest(name, passwd)
             searchPrivateLate(request)
         }
+
+        jumpButton.setOnClickListener {
+            val fragment = PrivateMainFragment.newInstance("1")
+
+            dismissAllowingStateLoss() // 다이얼로그 닫기
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         return view
     }
 
     private fun searchPrivateLate(request: SearchLateRequest) {
-        val apiService = RetrofitClient.lateApi
+        val apiService = RetrofitClient.getLateApi(requireContext())
 
         apiService.searchLate(request).enqueue(object : Callback<SearchLateResponse> {
             override fun onResponse(call: Call<SearchLateResponse>, response: Response<SearchLateResponse>) {

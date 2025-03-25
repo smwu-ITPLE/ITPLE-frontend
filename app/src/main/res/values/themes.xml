@@ -51,6 +51,16 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
+    <!-- Custom Button Style -->
+    <style name="WhiteButtonStyleNoText" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
     <style name="GrayButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/gray</item>
         <item name="android:textColor">@color/black</item>

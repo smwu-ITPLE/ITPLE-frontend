@@ -46,7 +46,8 @@ class ArchieveSuccessFragment(private val lateId: String, private val nickname: 
     private fun postArchive() {
         val request = ArchiveRequest(nickname, content)
 
-        RetrofitClient.lateApi.postArchive(lateId, request).enqueue(object : Callback<ApiResponse> {
+        val apiService = RetrofitClient.getLateApi(requireContext())
+        apiService.postArchive(lateId, request).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>
             ) {
                 if (response.isSuccessful) {

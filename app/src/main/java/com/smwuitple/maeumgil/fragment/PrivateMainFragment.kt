@@ -54,6 +54,8 @@ class PrivateMainFragment : Fragment() {
         val donationButton = view.findViewById<Button>(R.id.btn_chat2)
         val writeButton = view.findViewById<ImageView>(R.id.write_button)
 
+        val safeLateId = lateId ?: ""
+
         // 뒤로 가기 버튼 클릭 시 이전 화면으로 이동
         backButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -70,17 +72,18 @@ class PrivateMainFragment : Fragment() {
 
         // 조문 메시지 버튼 클릭
         chatButton.setOnClickListener {
-
+            val dialog = OwnerListFragment.newInstance(safeLateId, "message")
+            dialog.show(parentFragmentManager, "OwnerListFragment")
         }
 
         // 부의금 송금 버튼 클릭
         donationButton.setOnClickListener {
-
+            val dialog = OwnerListFragment.newInstance(safeLateId, "payment")
+            dialog.show(parentFragmentManager, "OwnerListFragment")
         }
 
         // 아카이브 작성 버튼 클릭
         writeButton.setOnClickListener {
-            val safeLateId = lateId ?: ""
             val dialog = Archieve1Fragment.newInstance(safeLateId)
             dialog.show(parentFragmentManager, "Archieve1Fragment")
         }
@@ -132,7 +135,7 @@ class PrivateMainFragment : Fragment() {
         passDateTextView: TextView, locationTextView: TextView, deathDateTextView: TextView,
         ownersListContainer: LinearLayout, archivesListContainer: LinearLayout
     ) {
-        val apiService = RetrofitClient.lateApi
+        val apiService = RetrofitClient.getLateApi(requireContext())
 
         apiService.enterLate(lateId).enqueue(object : Callback<EnterLateResponse> {
             override fun onResponse(call: Call<EnterLateResponse>, response: Response<EnterLateResponse>) {
@@ -146,8 +149,19 @@ class PrivateMainFragment : Fragment() {
                         locationTextView.text = it.location
                         deathDateTextView.text = formatDateToKoreanStyle(it.dateDeath)
 
-                        // 프로필 이미지 로드 (Glide 사용)
-                        Glide.with(requireContext()).load(it.profile).into(profileImageView)
+                        // 프로필 이미지 로드
+                        val profilePath = it.profile
+                        val glidePath = if (profilePath.startsWith("http")) {
+                            profilePath // 서버 URL이면 그대로 사용
+                        } else {
+                            "file://${profilePath.replace("\\", "/")}" // 로컬 파일이면 file:// 추가
+                        }
+
+                        Glide.with(requireContext())
+                            .load(glidePath)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .into(profileImageView)
+
 
                         // 상주 정보 리스트 추가
                         ownersListContainer.removeAllViews()

@@ -1,77 +1,70 @@
 package com.smwuitple.maeumgil.utils
 
+import android.content.Context
 import com.smwuitple.maeumgil.api.*
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private const val BASE_URL = "http://192.168.219.106:8081"
-    // res/xml/network_security_config.xml도 변경
+    private const val BASE_URL = "http://15.164.102.9:8081"  //"http://13.125.216.241:8081"
 
-    // 쿠키 저장 변수
-    private var sessionCookie: String? = null
+    // Retrofit 인스턴스를 싱글톤으로 유지
+    @Volatile
+    private var retrofitInstance: Retrofit? = null
 
-    // 쿠키 저장 Interceptor
-    private val cookieInterceptor = Interceptor { chain ->
-        val originalRequest = chain.request()
-        val requestBuilder = originalRequest.newBuilder()
-
-        // 기존 쿠키가 있으면 헤더에 추가
-        sessionCookie?.let {
-            requestBuilder.addHeader("Cookie", it)
+    private fun createRetrofit(context: Context): Retrofit {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
         }
 
-        val response = chain.proceed(requestBuilder.build())
+        val client = OkHttpClient.Builder()
+            .cookieJar(CustomCookieJar(context))  // 쿠키 자동 저장 & 불러오기 추가
+            .addInterceptor(loggingInterceptor)
+            .build()
 
-        // 응답에서 JSESSIONID 쿠키 저장
-        response.headers("Set-Cookie").forEach { cookie ->
-            if (cookie.startsWith("JSESSIONID")) {
-                sessionCookie = cookie
-            }
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // Retrofit 싱글톤 인스턴스 반환
+    private fun getRetrofitInstance(context: Context): Retrofit {
+        return retrofitInstance ?: synchronized(this) {
+            retrofitInstance ?: createRetrofit(context).also { retrofitInstance = it }
         }
-
-        response
     }
 
-    // OkHttp 로그 인터셉터 추가 (네트워크 요청 로그 출력)
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+    // API 서비스 반환 (함수 개선)
+    fun getUserApi(context: Context): UserApiService = getRetrofitInstance(context).create(UserApiService::class.java)
+    fun getLateApi(context: Context): LateApiService {
+        if (retrofitInstance == null) {
+            val client = OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.MINUTES) // 서버 연결 타임아웃 (기본 10초 → 5분)
+                .readTimeout(5, TimeUnit.MINUTES) // 응답 읽기 타임아웃
+                .writeTimeout(5, TimeUnit.MINUTES) // 요청 보내기 타임아웃
+                .retryOnConnectionFailure(true)  // 연결 실패 시 재시도
+                .addInterceptor { chain ->
+                    val original = chain.request()
+                    val request = original.newBuilder()
+                        .header("Expect", "100-continue")  // 대용량 업로드 최적화
+                        .build()
+                    chain.proceed(request)
+                }
+                .build()
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
-
-    // User API 인스턴스
-    val userApi: UserApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(UserApiService::class.java)
+            retrofitInstance = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofitInstance!!.create(LateApiService::class.java)
     }
-
-    // Late API 인스턴스
-    val lateApi: LateApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(LateApiService::class.java)
-    }
-
-    // Manage API 인스턴스
-    val manageApi: ManageApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ManageApiService::class.java)
-    }
+    fun getManageApi(context: Context): ManageApiService = getRetrofitInstance(context).create(ManageApiService::class.java)
+    fun getPaymentApi(context: Context): PaymentApiService = getRetrofitInstance(context).create(PaymentApiService::class.java)
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.R
 
@@ -19,6 +20,7 @@ class MainFragment : Fragment() {
 
         val loginButton = view.findViewById<Button>(R.id.btn_login)
         val signupButton = view.findViewById<Button>(R.id.btn_signup)
+        val jumpButton = view.findViewById<TextView>(R.id.jump_text)
 
         loginButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -32,6 +34,13 @@ class MainFragment : Fragment() {
                 .commit()
         }
 
+
+
+        jumpButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance())
+                .commit()
+        }
         return view
     }
 

@@ -1,60 +1,113 @@
 package com.smwuitple.maeumgil.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import com.smwuitple.maeumgil.MainActivity
 import com.smwuitple.maeumgil.R
+import com.smwuitple.maeumgil.dto.response.ApiResponse
+import com.smwuitple.maeumgil.dto.response.ProfileResponse
+import com.smwuitple.maeumgil.utils.RetrofitClient
+import com.smwuitple.maeumgil.utils.SessionManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ManageMainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ManageMainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var profileTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manage_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_manage_main, container, false)
+
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
+        profileTextView = view.findViewById(R.id.txt_memorial_message)
+
+        loadUserProfile()
+
+        // 뒤로 가기 버튼 클릭 시 이전 화면으로 이동
+        backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        val historyButton = view.findViewById<View>(R.id.myhistory)
+        historyButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageHistoryFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+
+
+        // 조문 공간 프로필 버튼 클릭 이벤트
+        val settingButton = view.findViewById<View>(R.id.setting)
+        settingButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageListFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // 로그아웃 버튼
+        val logoutButton = view.findViewById<View>(R.id.logout)
+        logoutButton.setOnClickListener {
+            val apiService = RetrofitClient.getUserApi(requireContext())  // Retrofit 인스턴스 가져오기
+
+            apiService.logoutUser().enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                        // 성공적으로 로그아웃되면 SharedPreferences 삭제
+                        val sharedPreferences = requireActivity().getSharedPreferences("cookie_prefs", 0)
+                        sharedPreferences.edit().clear().apply()
+
+                        // 로그인 화면(MainActivity)으로 이동
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                        Toast.makeText(requireContext(), "로그아웃 성공", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "서버와의 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+
+
+        return view
+    }
+
+    private fun loadUserProfile() {
+        val apiService = RetrofitClient.getUserApi(requireContext()) // 자동 쿠키 관리 적용된 Retrofit 사용
+        apiService.profileUser().enqueue(object : Callback<ProfileResponse> {
+            override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.data?.let {
+                        profileTextView.text = "${it.name}님"
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                profileTextView.text = "사용자"
+            }
+        })
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManageMainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ManageMainFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): ManageMainFragment {
+            return ManageMainFragment()
+        }
     }
 }
