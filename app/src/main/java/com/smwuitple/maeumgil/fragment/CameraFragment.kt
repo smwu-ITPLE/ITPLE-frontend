@@ -26,13 +26,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.smwuitple.maeumgil.R
-import com.smwuitple.maeumgil.utils.VideoProcessor
+import com.smwuitple.maeumgil.network.ApiClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import android.net.Uri
-import android.os.Environment
-import java.io.FileOutputStream
 
 class CameraFragment : Fragment() {
 
@@ -66,11 +70,7 @@ class CameraFragment : Fragment() {
         }
 
         recordButton.setOnClickListener {
-            if (recording != null) {
-                stopRecording()
-            } else {
-                startRecording()
-            }
+            if (recording != null) stopRecording() else startRecording()
         }
 
         switchCameraButton.setOnClickListener {
@@ -120,7 +120,6 @@ class CameraFragment : Fragment() {
 
     private fun startRecording() {
         val videoCapture = this.videoCapture ?: return
-
         val videoFile = File(requireContext().filesDir, "video_${System.currentTimeMillis()}.mp4")
         val outputOptions = FileOutputOptions.Builder(videoFile).build()
 
@@ -129,21 +128,17 @@ class CameraFragment : Fragment() {
             .start(ContextCompat.getMainExecutor(requireContext())) { event ->
                 when (event) {
                     is VideoRecordEvent.Start -> {
-                        Log.d("CameraFragment", "🎬 녹화 시작됨")
                         recordButton.text = "녹화 중지"
                     }
                     is VideoRecordEvent.Finalize -> {
-                        Log.d("CameraFragment", "✅ 녹화 종료됨")
                         recordButton.text = "촬영하기"
                         recording = null
-
                         if (!event.hasError()) {
-                            Log.d("CameraFragment", "📁 파일 경로: ${videoFile.absolutePath}")
                             Handler(Looper.getMainLooper()).postDelayed({
                                 processCapturedVideo(videoFile.absolutePath)
                             }, 300)
                         } else {
-                            Log.e("CameraFragment", "❌ 녹화 오류: ${event.error}")
+                            Toast.makeText(requireContext(), "녹화 실패", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -151,7 +146,6 @@ class CameraFragment : Fragment() {
     }
 
     private fun stopRecording() {
-        Log.d("CameraFragment", "🛑 녹화 중지 호출됨")
         recordButton.text = "처리 중..."
         recording?.stop()
     }
@@ -172,30 +166,40 @@ class CameraFragment : Fragment() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        if (isGranted) {
-            startCamera()
-        } else {
-            Log.e("CameraFragment", "카메라 권한이 거부되었습니다.")
-        }
+        if (isGranted) startCamera()
+        else Toast.makeText(requireContext(), "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun processCapturedVideo(videoPath: String) {
-        val outputVideoPath = "${requireContext().filesDir}/processed_video.mp4"
         loadingContainer.visibility = View.VISIBLE
 
-        Log.d("VideoProcessor", "🔥 Start processing video: $videoPath")
+        val file = File(videoPath)
+        val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("video", file.name, requestFile)
 
-        VideoProcessor.applyFilters(requireContext(), videoPath, outputVideoPath) { success ->
-            loadingContainer.visibility = View.GONE
-            if (success) {
-                saveVideoToGallery(outputVideoPath)
-                Toast.makeText(requireContext(), "영상 저장 완료", Toast.LENGTH_SHORT).show()
-                parentFragmentManager.popBackStack() // Close fragment
-            } else {
-                Log.e("CameraFragment", "❌ Video processing failed")
-                Toast.makeText(requireContext(), "영상 처리 실패", Toast.LENGTH_SHORT).show()
+        ApiClient.instance.uploadVideo(body).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                loadingContainer.visibility = View.GONE
+                if (response.isSuccessful && response.body() != null) {
+                    val processedVideo = response.body()!!
+                    val outFile = File(requireContext().filesDir, "processed_video.mp4")
+                    outFile.outputStream().use { output ->
+                        processedVideo.byteStream().copyTo(output)
+                    }
+                    saveVideoToGallery(outFile.absolutePath)
+                    Toast.makeText(requireContext(), "영상 저장 완료", Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireContext(), "서버 처리 실패", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                loadingContainer.visibility = View.GONE
+                Toast.makeText(requireContext(), "서버 요청 실패: ${t.message}", Toast.LENGTH_LONG).show()
+                Log.e("CameraFragment", "❌ Error: ${t.message}")
+            }
+        })
     }
 
     private fun saveVideoToGallery(videoPath: String) {
@@ -222,9 +226,9 @@ class CameraFragment : Fragment() {
                     inputStream.copyTo(outputStream!!)
                 }
             }
-            Log.d("CameraFragment", "✅ Filtered video saved to gallery: $videoUri")
+            Log.d("CameraFragment", "✅ 저장 완료: $videoUri")
         } else {
-            Log.e("CameraFragment", "❌ Failed to create MediaStore entry")
+            Log.e("CameraFragment", "❌ 저장 실패")
         }
     }
 
