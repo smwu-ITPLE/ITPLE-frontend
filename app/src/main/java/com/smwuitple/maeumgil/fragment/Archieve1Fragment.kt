@@ -52,7 +52,7 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
 
             val senderName = if (name.isEmpty()) "익명" else name
 
-            // 🔥 서버로 욕설 감지 API 요청
+            // 서버로 욕설 감지 API 요청
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val response = apiService.detectText(mapOf("text" to message))
