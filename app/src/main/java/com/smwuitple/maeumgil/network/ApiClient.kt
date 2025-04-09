@@ -5,8 +5,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
-
 object ApiClient {
     private const val BASE_URL_VIDEO = "http://54.180.149.127:5001"  // 비디오 서버용
     private const val BASE_URL_TEXT = "http://54.180.149.127:5002"   // 텍스트 필터링 서버용
