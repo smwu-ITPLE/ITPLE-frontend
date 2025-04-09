@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.HttpException
+import com.smwuitple.maeumgil.network.TextRequest
+
 
 class Archieve1Fragment(private val lateId: String) : DialogFragment() {
 
@@ -55,7 +57,7 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
             // 서버로 욕설 감지 API 요청
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val response = apiService.detectText(mapOf("text" to message))
+                    val response = apiService.detectText(TextRequest(message))
                     withContext(Dispatchers.Main) {
                         if (response.detected) {
                             val failedFragment = Archieve2Fragment.newInstance(lateId, senderName, message, isFailed = true)

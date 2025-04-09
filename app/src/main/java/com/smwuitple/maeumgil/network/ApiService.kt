@@ -26,6 +26,5 @@ interface ApiService {
     ): Call<ResponseBody>
 
     @POST("/filter_text")
-    suspend fun detectText(@Body request: Map<String, String>): DetectionResponse
-
+    suspend fun detectText(@Body request: TextRequest): DetectionResponse
 }
