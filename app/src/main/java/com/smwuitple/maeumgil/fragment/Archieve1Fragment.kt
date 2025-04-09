@@ -12,9 +12,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.smwuitple.maeumgil.R
-import com.smwuitple.maeumgil.utils.CurseWordDetector
+import com.smwuitple.maeumgil.network.ApiClient
+import com.smwuitple.maeumgil.network.ApiService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import retrofit2.HttpException
+import com.smwuitple.maeumgil.network.TextRequest
+
 
 class Archieve1Fragment(private val lateId: String) : DialogFragment() {
+
+    private val apiService = ApiClient.textApiService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,21 +54,30 @@ class Archieve1Fragment(private val lateId: String) : DialogFragment() {
 
             val senderName = if (name.isEmpty()) "익명" else name
 
-            // 욕설 감지
-            val detected = CurseWordDetector.hasCurseWords(message)
-
-            if (detected) {
-                val loadingFragment = Archieve2Fragment.newInstance(lateId, senderName, message, isFailed = true)
-                loadingFragment.show(parentFragmentManager, "Archieve2Fragment")
-                dismiss()
-                return@setOnClickListener
+            // 서버로 욕설 감지 API 요청
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = apiService.detectText(TextRequest(message))
+                    withContext(Dispatchers.Main) {
+                        if (response.detected) {
+                            val failedFragment = Archieve2Fragment.newInstance(lateId, senderName, message, isFailed = true)
+                            failedFragment.show(parentFragmentManager, "Archieve2Fragment")
+                        } else {
+                            val successFragment = Archieve2Fragment.newInstance(lateId, senderName, message)
+                            successFragment.show(parentFragmentManager, "Archieve2Fragment")
+                        }
+                        dismiss()
+                    }
+                } catch (e: HttpException) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "욕설 감지 서버 오류", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-
-
-            // 욕설 없을 경우 다음 단계로
-            val processingFragment = Archieve2Fragment.newInstance(lateId, senderName, message)
-            processingFragment.show(parentFragmentManager, "Archieve2Fragment")
-            dismiss()
         }
 
         return view
