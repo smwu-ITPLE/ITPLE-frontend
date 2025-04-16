@@ -1,3 +1,4 @@
+// ✅ CameraFragment.kt 전체 수정본
 package com.smwuitple.maeumgil.fragment
 
 import android.Manifest
@@ -175,9 +176,13 @@ class CameraFragment : Fragment() {
 
         val file = File(videoPath)
         val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("video", file.name, requestFile)
+        val videoPart = MultipartBody.Part.createFormData("video", file.name, requestFile)
 
-        ApiClient.instance.uploadVideo(body).enqueue(object : Callback<ResponseBody> {
+        // ✅ 전면/후면 여부도 함께 전송
+        val cameraFacing = if (lensFacing == CameraSelector.LENS_FACING_FRONT) "front" else "back"
+        val cameraPart = MultipartBody.Part.createFormData("camera", cameraFacing)
+
+        ApiClient.instance.uploadVideo(videoPart, cameraPart).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 loadingContainer.visibility = View.GONE
                 if (response.isSuccessful && response.body() != null) {
@@ -192,6 +197,7 @@ class CameraFragment : Fragment() {
                 } else {
                     Toast.makeText(requireContext(), "서버 처리 실패", Toast.LENGTH_SHORT).show()
                 }
+                Log.d("CameraFragment", "🔥 서버 응답 코드: ${response.code()}, 성공 여부: ${response.isSuccessful}")
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
