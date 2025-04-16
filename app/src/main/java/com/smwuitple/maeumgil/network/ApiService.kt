@@ -1,4 +1,4 @@
-// ApiService.kt
+// ApiService.kt 수정본
 package com.smwuitple.maeumgil.network
 
 import okhttp3.MultipartBody
@@ -22,7 +22,8 @@ interface ApiService {
     @Multipart
     @POST("/process_video")
     fun uploadVideo(
-        @Part video: MultipartBody.Part
+        @Part video: MultipartBody.Part,
+        @Part camera: MultipartBody.Part
     ): Call<ResponseBody>
 
     @POST("/filter_text")
